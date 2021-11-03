@@ -1,29 +1,16 @@
-.dialogues {
-    display: grid;
-    grid-template-columns: 2fr 10fr;
+.dialoguesPage {
+  display: grid;
+  grid-template-columns: 2fr 10fr;
 }
 
-.dialoguesItems {
-    padding: 10px;
-    color: white;
+.dialoguesList {
+  padding: 20px;
 }
 
-.dialoguesItems .active {
-    color: #15771f;
+.active {
+  color: gold;
 }
 
-.messages {
-    padding: 10px;
-    color: white;
-
+.messagesList {
+  padding: 20px;
 }
-
-.dialogue a {
-    text-decoration: none;
-    color: white;
-}
-
-.messages .message {
-    color: white;
-}
-
