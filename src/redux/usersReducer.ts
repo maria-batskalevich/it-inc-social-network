@@ -1,6 +1,12 @@
-import {ActionTypes} from "./redux-store";
 
 export type InitialUsersStateType = typeof initialUsersState;
+type UsersReducerActionTypes =
+    | ReturnType<typeof follow>
+    | ReturnType<typeof unfollow>
+    | ReturnType<typeof setUsers>
+    | ReturnType<typeof setCurrentPage>
+    | ReturnType<typeof setTotalUsersCount>
+    | ReturnType<typeof toggleIsFetching>;
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -32,7 +38,7 @@ const initialUsersState = {
 
 export const usersReducer = (
     state: InitialUsersStateType = initialUsersState,
-    action: ActionTypes) => {
+    action: UsersReducerActionTypes) => {
     switch (action.type) {
         case FOLLOW:
             return {
@@ -53,7 +59,7 @@ export const usersReducer = (
             }
         case "SET_TOTAL_USERS_COUNT":
             return {
-                ...state, totalUsersCount: action.totalCount
+                ...state, totalUsersCount: action.totalUsersCount
             }
         case 'TOGGLE_IS_FETCHING':
             return{...state, isFetching: action.isFetching}
@@ -67,6 +73,6 @@ export const follow = (userId: number) => ({type: FOLLOW, userId} as const);
 export const unfollow= (userId: number) => ({type: UNFOLLOW, userId} as const);
 export const setUsers = (users: UserType[]) => ({type: SET_USERS, users} as const);
 export const setCurrentPage = (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage} as const);
-export const setTotalUsersCount = (totalCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalCount} as const);
+export const setTotalUsersCount = (totalUsersCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount} as const);
 export const toggleIsFetching = (isFetching: boolean) => ({type: TOGGLE_IS_FETCHING, isFetching} as const);
 

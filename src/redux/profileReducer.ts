@@ -1,22 +1,53 @@
 import {ActionTypes} from "./redux-store";
 
 export type InitialProfileStateType = typeof initialProfileState;
+type ProfileReducerActionTypes =
+    | ReturnType<typeof addPost>
+    | ReturnType<typeof updateNewPostText>
+    | ReturnType<typeof setUserProfile>;
 
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
+const SET_USER_PROFILE = 'SET-USER-PROFILE'
+export type PostType = {
+    id: number;
+    postText: string;
+    likesCount: number;
+};
+type UserContactsType = {
+    github: string;
+    vk: string;
+    facebook: string;
+    instagram: string;
+    twitter: string;
+    website: string;
+    youtube: string;
+    mainLink: string;
+};
+type PhotosType = {
+    small: string;
+    large: string;
+};
+
+export type UserProfileType = {
+    aboutMe: string;
+    userId: number;
+    lookingForAJob: boolean;
+    lookingForAJobDescription: string;
+    fullName: string;
+    contacts: UserContactsType;
+    photos: PhotosType;
+};
 
 const initialProfileState = {
-    posts: [
-        {id: 1, postText: "It's my first post!", likesCount: 11},
-        {id: 2, postText: "How are you?", likesCount: 8},
-
-    ],
-    newPostText: ""
+    posts: [] as PostType[],
+    newPostText: "",
+    userProfile: {} as UserProfileType,
 };
 
 export const profileReducer = (
     state: InitialProfileStateType = initialProfileState,
-    action: ActionTypes
+    action: ProfileReducerActionTypes
 ): InitialProfileStateType => {
     switch (action.type) {
         case ADD_POST:
@@ -34,17 +65,27 @@ export const profileReducer = (
             return {
                 ...state,
                 newPostText: action.inputPostText,
-            }
+            };
+        case SET_USER_PROFILE: {
+            return {...state, userProfile: action.userProfile};
+        }
+
         default:
             return state;
     }
 };
-export const addPostAC = () =>
+export const addPost = () =>
     ({
         type: ADD_POST,
     } as const);
-export const updateNewPostTextAC = (inputPostText: string) =>
+export const updateNewPostText = (inputPostText: string) =>
     ({
         type: UPDATE_NEW_POST_TEXT,
         inputPostText,
     } as const);
+
+export const setUserProfile = (userProfile: UserProfileType) => ({
+    type: SET_USER_PROFILE,
+    userProfile,
+} as const)
+

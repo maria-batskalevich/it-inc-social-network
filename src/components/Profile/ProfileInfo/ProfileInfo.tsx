@@ -1,7 +1,12 @@
 import React from "react";
 import s from "./ProfileInfo.module.css";
+import { ProfilePropsType as ProfileInfoPropsType } from "../Profile";
+import {Preloader} from "../../common/Preloader/Preloader";
 
-export const ProfileInfo = () => {
+export const ProfileInfo = (props: ProfileInfoPropsType) => {
+    if(!props.userProfile.userId) {
+        return <Preloader/>
+    } else
   return (
     <div>
       <div>
@@ -10,7 +15,9 @@ export const ProfileInfo = () => {
           alt={"background"}
         />
       </div>
-      <div className={s.descriptionBlock}>Ava + description</div>
+      <div className={s.descriptionBlock}>
+          Ava + description</div>
+        <img src={props.userProfile.photos.large} />
     </div>
   );
 };
