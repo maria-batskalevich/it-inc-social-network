@@ -10,13 +10,10 @@ import {RouteComponentProps, withRouter} from "react-router-dom";
 type MapStatePropsType = {
     userProfile: UserProfileType;
 };
-
 type MapDispatchPropsType = {
     setUserProfile: (userProfile: UserProfileType) => void;
 };
-
 type ProfileClassContainerPropsType = MapStatePropsType & MapDispatchPropsType;
-
 type ProfilePathParamsType = {
     userID: string;
 };

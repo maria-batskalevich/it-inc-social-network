@@ -13,6 +13,7 @@ import {
     follow, setCurrentPage, setTotalUsersCount, setUsers, toggleIsFetching, unfollow,
     usersReducer
 } from "./usersReducer";
+import authReducer from "./authReducer";
 // IMPORTS
 
 export type ReduxRootStateType = ReturnType<typeof reduxReducers>;
@@ -35,7 +36,9 @@ export type ActionTypes =
 export const reduxReducers = combineReducers({
     profilePage: profileReducer,
     dialoguesPage: dialoguesReducer,
-    usersPage: usersReducer
+    usersPage: usersReducer,
+    auth: authReducer,
+
 }); // combineReducers() - Redux function which combines all reduxReducers; accepts object with STORE BRANCH: BRANCH REDUCER key-value pairs
 
 export const reduxStore = createStore(reduxReducers); // createStore() - Redux function to create reduxStore; accepts return value of combineReducers() as its input --> createStore() creates state object, whose .reduxStore has properties set as keys inside of combineReducers() inputs
