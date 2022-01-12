@@ -1,4 +1,3 @@
-import {ActionTypes} from "./redux-store";
 
 export type InitialProfileStateType = typeof initialProfileState;
 type ProfileReducerActionTypes =
@@ -88,4 +87,3 @@ export const setUserProfile = (userProfile: UserProfileType) => ({
     type: SET_USER_PROFILE,
     userProfile,
 } as const)
-

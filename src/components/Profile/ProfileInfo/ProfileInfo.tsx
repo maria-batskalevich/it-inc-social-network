@@ -17,7 +17,7 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
       </div>
       <div className={s.descriptionBlock}>
           Ava + description</div>
-        <img src={props.userProfile.photos.large} />
+        {/*<img src={props.userProfile.photos.large} />*/}
     </div>
   );
 };
