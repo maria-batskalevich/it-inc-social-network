@@ -1,3 +1,4 @@
+import {usersAPI} from "../api/api";
 
 export type InitialProfileStateType = typeof initialProfileState;
 type ProfileReducerActionTypes =
@@ -73,10 +74,8 @@ export const profileReducer = (
             return state;
     }
 };
-export const addPost = () =>
-    ({
-        type: ADD_POST,
-    } as const);
+
+export const addPost = () => ({type: ADD_POST} as const);
 export const updateNewPostText = (inputPostText: string) =>
     ({
         type: UPDATE_NEW_POST_TEXT,
@@ -87,3 +86,9 @@ export const setUserProfile = (userProfile: UserProfileType) => ({
     type: SET_USER_PROFILE,
     userProfile,
 } as const)
+
+export const getUserProfile = (userId: any) => (dispatch: any) => {
+    usersAPI.getProfile(userId).then(response => {
+        dispatch(setUserProfile(response.data))
+    })
+}

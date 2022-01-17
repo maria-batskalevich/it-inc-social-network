@@ -1,5 +1,5 @@
 import axios from "axios";
-import {follow, unfollow} from "../redux/usersReducer";
+
 
 const instance = axios.create({
     withCredentials: true,
@@ -10,33 +10,32 @@ const instance = axios.create({
 })
 
 export const usersAPI = {
-    gerUsers: (currentPage: any, pageSize: any) => {
+    gerUsers: (currentPage: 1, pageSize: 10) => {
         return instance
-            .get( `users?page=${currentPage}&count=${pageSize}`)
+            .get(`users?page=${currentPage}&count=${pageSize}`)
             .then(promise => promise.data)
+    },
+    follow(userId: number) {
+        return instance
+            .post(`follow/${userId}`)
+    },
+    unfollow(userId: number) {
+        return instance
+            .delete(`follow/${userId}`)
+    },
+    getProfile(userID: string) {
+        return instance
+            .get(`profile/${userID}`);
+    }
+}
+
+export const authAPI = {
+    me() {
+        return instance.get(`auth/me`)
     }
 }
 
 
 
-export const unfollowUser = (id: any) => {
-    return instance
-        .delete(`follow/${id}`)
-        .then(promise => {
-            if (promise.data.resultCode === 0) {
-                unfollow(id)
-            }
-        })
-}
 
-export const followUser = (id: any) => {
-    return instance
-        .post(
-            `follow/${id}`,
-            {})
-        .then(promise => {
-            if (promise.data.resultCode === 0) {
-                follow(id)
-            }
-        })
-}
+

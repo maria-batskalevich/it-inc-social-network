@@ -1,3 +1,5 @@
+import {authAPI} from "../api/api";
+import {Dispatch} from "react";
 
 export type InitialUsersStateType = typeof initialAuthUserState;
 export type AuthReducerActionTypes =
@@ -35,4 +37,12 @@ export const authReducer = (
 };
 
 export const setAuthUserData = (initialAuthUserState: InitialUsersStateType) => ({type: SET_USER_DATA, data: initialAuthUserState} as const);
+export const getAuthUserData = () => (dispatch: Dispatch<any>) => {
+    authAPI.me().then(promise => {
+        if (promise.data.resultCode === 0) {
+            dispatch(setAuthUserData(promise.data.data));
+        }
+    });
+}
+
 export default authReducer;

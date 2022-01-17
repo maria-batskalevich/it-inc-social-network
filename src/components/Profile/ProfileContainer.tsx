@@ -1,21 +1,21 @@
 import React from "react";
 import {Profile} from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
-import {setUserProfile, UserProfileType} from "../../redux/profileReducer";
+import {getUserProfile, UserProfileType} from "../../redux/profileReducer";
 import {ReduxRootStateType} from "../../redux/redux-store";
-import {RouteComponentProps, withRouter} from "react-router-dom";
+import {Redirect, RouteComponentProps, withRouter} from "react-router-dom";
 
 
 type MapStatePropsType = {
     userProfile: UserProfileType;
+    isAuth: boolean
 };
 type MapDispatchPropsType = {
-    setUserProfile: (userProfile: UserProfileType) => void;
+    getUserProfile: (userId: number) => void;
 };
 type ProfileClassContainerPropsType = MapStatePropsType & MapDispatchPropsType;
 type ProfilePathParamsType = {
-    userID: string;
+    userId: string;
 };
 type ProfileClassContainerURLPropsType = RouteComponentProps<ProfilePathParamsType> &
     ProfileClassContainerPropsType;
@@ -26,17 +26,14 @@ class ProfileClassContainer extends React.Component<
     UserProfileType>{
 
     componentDidMount() {
-        let userID = this.props.match.params.userID;
-        if (!userID) {
-            userID = "2";
+        let userId = Number(this.props.match.params.userId);
+        if (!userId) {
+            userId = 2;
         }
-        axios
-            .get(`https://social-network.samuraijs.com/api/1.0/profile/${userID}`)
-            .then((promise) => {
-                this.props.setUserProfile(promise.data);
-            });
+        this.props.getUserProfile(userId)
     }
     render = () => {
+        if (!this.props.isAuth) return <Redirect to={'/login'}/>
         return (
             <div>
                 <Profile {...this.props} userProfile={this.props.userProfile}/>
@@ -48,7 +45,9 @@ class ProfileClassContainer extends React.Component<
 const ProfileURLContainer = withRouter(ProfileClassContainer);
 let mapStateToProps = (state: ReduxRootStateType): MapStatePropsType => ({
     userProfile: state.profilePage.userProfile,
+    isAuth: state.auth.isAuth
+
 })
 
-export const ProfileContainer =  connect(mapStateToProps,{setUserProfile} )(
+export const ProfileContainer =  connect(mapStateToProps,{getUserProfile} )(
     ProfileURLContainer)
