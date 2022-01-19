@@ -10,8 +10,8 @@ export type UsersPropsType = {
     currentPage: number
     onPageChanged: (pageNumber: number) => void
     users: Array<UserType>,
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
+    follow: (userId: any) => void
+    unfollow: (userId: any) => void
     followingInProgress: Array<number>
 }
 
@@ -41,17 +41,22 @@ export const Users = React.memo((props: UsersPropsType) => {
 
                         </div>
                         <div>
-                            {u.followed ?
+                            {u.followed ? (
                                 <button
                                     disabled={props.followingInProgress.some(id => id === u.id)}
-                                    onClick={() => {props.unfollow(u.id)}}>Unfollow</button> :
-
+                                    onClick={() => {
+                                        props.unfollow(u.id)
+                                    }}>Unfollow</button>
+                            ) : (
                                 <button disabled={props.followingInProgress.some(id => id === u.id)}
-                                        onClick={() => {props.follow(u.id)}}>Follow</button>}
-
+                                        onClick={() => {
+                                            props.follow(u.id)
+                                        }}>Follow</button>
+                            )}
                         </div>
                     </span>
                     <span>
+                        <div>{u.id}</div>
                         <div>{u.name}</div>
                         <div>{u.status}</div>
                     </span>

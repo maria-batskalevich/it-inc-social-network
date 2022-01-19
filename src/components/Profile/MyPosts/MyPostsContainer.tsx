@@ -8,7 +8,8 @@ const mapStateToProps = (state: ReduxRootStateType): InitialProfileStateType => 
     return {
         posts: state.profilePage.posts,
         newPostText: state.profilePage.newPostText,
-        userProfile: state.profilePage.userProfile
+        userProfile: state.profilePage.userProfile,
+        status: state.profilePage.status,
     }
 }
 

@@ -5,7 +5,7 @@ import {
   DialogueItemPropsType as DialogueItemType,
 } from "./DialogueItem/DialogueItem";
 import { Message, MessagePropsType as MessageType } from "./Message/Message";
-import {Redirect} from "react-router-dom";
+
 
 type DialoguesPropsType = {
   messages: Array<MessageType>;
@@ -13,7 +13,7 @@ type DialoguesPropsType = {
   newMessageText: string;
   updateNewMessageText: (newMessageText: string) => void;
   sendMessage: () => void;
-  isAuth: boolean
+
 };
 
 export const Dialogues = (props: DialoguesPropsType) => {
@@ -31,7 +31,6 @@ export const Dialogues = (props: DialoguesPropsType) => {
   const onMessageSending = () => {
     props.sendMessage();
   };
-  if (!props.isAuth) return <Redirect to={'/login'}/>
 
   return (
     <div className={s.dialoguesPage}>

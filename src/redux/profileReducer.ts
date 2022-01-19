@@ -1,14 +1,18 @@
-import {usersAPI} from "../api/api";
+import {profileAPI, usersAPI} from "../api/api";
+import {Dispatch} from "react";
 
 export type InitialProfileStateType = typeof initialProfileState;
 type ProfileReducerActionTypes =
     | ReturnType<typeof addPost>
     | ReturnType<typeof updateNewPostText>
-    | ReturnType<typeof setUserProfile>;
+    | ReturnType<typeof setUserProfile>
+    | ReturnType<typeof setStatus>;
 
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
+const SET_STATUS = 'SET-STATUS'
+
 export type PostType = {
     id: number;
     postText: string;
@@ -31,7 +35,7 @@ type PhotosType = {
 
 export type UserProfileType = {
     aboutMe: string;
-    userId: number;
+    userId: any;
     lookingForAJob: boolean;
     lookingForAJobDescription: string;
     fullName: string;
@@ -43,6 +47,7 @@ const initialProfileState = {
     posts: [] as PostType[],
     newPostText: "",
     userProfile: {} as UserProfileType,
+    status: '',
 };
 
 export const profileReducer = (
@@ -50,16 +55,16 @@ export const profileReducer = (
     action: ProfileReducerActionTypes
 ): InitialProfileStateType => {
     switch (action.type) {
-        case ADD_POST:
+        case ADD_POST: {
+            const updatedState = {...state, posts: [...state.posts]}
             const newPost = {
                 id: 4,
                 postText: state.newPostText,
                 likesCount: 0,
             };
-            return {
-                ...state,
-                posts: [...state.posts, newPost],
-                newPostText: "",
+            updatedState.posts.push(newPost);
+            updatedState.newPostText = '';
+            return updatedState
             };
         case UPDATE_NEW_POST_TEXT:
             return {
@@ -68,6 +73,12 @@ export const profileReducer = (
             };
         case SET_USER_PROFILE: {
             return {...state, userProfile: action.userProfile};
+        }
+        case SET_STATUS: {
+            return {
+                ...state,
+                status: action.status
+            }
         }
 
         default:
@@ -86,9 +97,29 @@ export const setUserProfile = (userProfile: UserProfileType) => ({
     type: SET_USER_PROFILE,
     userProfile,
 } as const)
+export const setStatus = (status: string) => ({
+    type: SET_STATUS,
+    status,
+} as const)
 
-export const getUserProfile = (userId: any) => (dispatch: any) => {
-    usersAPI.getProfile(userId).then(response => {
+export const getUserProfile = (userId: any) => (dispatch: Dispatch<any>) => {
+    profileAPI.getProfile(userId).then(response => {
         dispatch(setUserProfile(response.data))
     })
+}
+
+export const getUserStatus = (userId: any) => (dispatch: any) => {
+    profileAPI.getStatus(userId)
+        .then(response => {
+            dispatch(setStatus(response.data))
+        })
+}
+
+export const updateUserStatus = (status: string) => (dispatch: any) => {
+    profileAPI.updateUserStatus(status)
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(setStatus(status))
+            }
+        })
 }

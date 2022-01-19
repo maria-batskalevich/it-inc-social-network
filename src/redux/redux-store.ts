@@ -16,7 +16,7 @@ import {
 import authReducer from "./authReducer";
 import thunkMiddleware from 'redux-thunk'
 
-export type ReduxRootStateType = ReturnType<typeof reduxReducers>;
+export type ReduxRootStateType = ReturnType<typeof reduxReducer>;
 export type ReduxStoreType = typeof reduxStore;
 
 export type ActionTypes =
@@ -33,7 +33,7 @@ export type ActionTypes =
     | ReturnType<typeof setUserProfile>
 // TYPES
 
-export const reduxReducers = combineReducers({
+export const reduxReducer = combineReducers({
     profilePage: profileReducer,
     dialoguesPage: dialoguesReducer,
     usersPage: usersReducer,
@@ -41,4 +41,4 @@ export const reduxReducers = combineReducers({
 
 });
 
-export const reduxStore = createStore(reduxReducers, applyMiddleware(thunkMiddleware));
+export const reduxStore = createStore(reduxReducer, applyMiddleware(thunkMiddleware));

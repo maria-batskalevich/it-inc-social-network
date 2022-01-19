@@ -6,6 +6,8 @@ import {Preloader} from "../common/Preloader/Preloader";
 import {
     follow, getUsers, setCurrentPage, unfollow, UserType
 } from "../../redux/usersReducer";
+import {compose} from 'redux';
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 
 type MapStatePropsType = {
@@ -17,16 +19,17 @@ type MapStatePropsType = {
     followingInProgress: Array<number>,
 };
 type MapDispatchPropsType = {
-    follow: (userID: number) => void;
-    unfollow: (userID: number) => void;
+    follow: (userId: any) => void;
+    unfollow: (userId: any) => void;
     setCurrentPage: (currentPage: number) => void
-    getUsers: (currentPage: number, pageSize: number) => void
+    getUsers: (pageNumber: number, pageSize: number) => void
 };
 
 export type UsersClassContainerPropsType = MapStatePropsType & MapDispatchPropsType;
 
-export class UsersContainer extends React.Component <UsersClassContainerPropsType,
+class UsersContainer extends React.Component <UsersClassContainerPropsType,
     Array<UserType>> {
+
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize);
     }
@@ -54,19 +57,21 @@ export class UsersContainer extends React.Component <UsersClassContainerPropsTyp
     }
 }
 
-const mapStateToProps = (state: ReduxRootStateType) => {
+const mapStateToProps = (state: ReduxRootStateType): MapStatePropsType => ({
+    users: state.usersPage.users,
+    pageSize: state.usersPage.pageSize,
+    totalUsersCount: state.usersPage.totalUsersCount,
+    currentPage: state.usersPage.currentPage,
+    isFetching: state.usersPage.isFetching,
+    followingInProgress: state.usersPage.followingInProgress
 
-    return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
-    }
-}
+}) as MapStatePropsType
+
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, {
+        follow, unfollow, setCurrentPage, getUsers,
+    }),
+    withAuthRedirect)
+(UsersContainer)
 
 
-export default connect(mapStateToProps, {
-    follow, unfollow, setCurrentPage, getUsers,
-})(UsersContainer)
