@@ -1,30 +1,19 @@
 import React from "react";
-import {findAllByDisplayValue} from "@testing-library/react";
+import {LoginPropsType} from "./LoginContainer";
+import LoginForm, {LoginFormDataType} from "./LoginForm";
+import {Redirect} from "react-router-dom";
 
-export const LoginForm = () => {
-    return <div>
-        <form>
-            <div>
-                <input placeholder={'Login'}/>
-            </div>
-            <div>
-                <input placeholder={'Password'}/>
-            </div>
-            <div>
-                <input type={'checkbox'}/> remember me
-            </div>
-            <div>
-                <button>Log In</button>
-            </div>
-        </form>
-    </div>
+export const Login = React.memo((props: LoginPropsType) => {
+    const onSubmit = (formData: LoginFormDataType) =>
+        props.login(formData.email, formData.password, formData.rememberMe);
+    // props.login !== loginTC , connect()() from LoginContainer passed eponymous callback via props, which dispatches loginTC inside of itself !
 
-}
-
-export const Login = (props: any) => {
-    return <div>
-        <h1>Login</h1>
-        <LoginForm/>
-    </div>
-
-}
+    if (props.isAuth) return <Redirect to={"/profile"} />;
+    else
+        return (
+            <div>
+                <h1>Log in</h1>
+                <LoginForm onSubmit={onSubmit} />
+            </div>
+        );
+});

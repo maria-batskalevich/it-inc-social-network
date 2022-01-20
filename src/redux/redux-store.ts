@@ -1,43 +1,38 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {
-    profileReducer,
-    addPost,
-    updateNewPostText, setUserProfile,
+    profileReducer, ProfileReducerActionTypes,
 } from "./profileReducer";
 import {
-    dialoguesReducer,
-    sendMessage,
-    updateNewMessageText,
+    dialoguesReducer, DialoguesReducerActionTypes,
 } from "./dialoguesReducer";
 import {
-    follow, setCurrentPage, setTotalUsersCount, setUsers, toggleIsFetching, unfollow,
-    usersReducer
+    usersReducer, UsersReducerActionTypes
 } from "./usersReducer";
-import authReducer from "./authReducer";
-import thunkMiddleware from 'redux-thunk'
+import authReducer, {AuthReducerActionTypes} from "./authReducer";
+import thunkMiddleware, {ThunkAction} from 'redux-thunk'
+import {FormAction, reducer as formReducer} from 'redux-form'
 
 export type ReduxRootStateType = ReturnType<typeof reduxReducer>;
 export type ReduxStoreType = typeof reduxStore;
 
-export type ActionTypes =
-    | ReturnType<typeof addPost>
-    | ReturnType<typeof updateNewPostText>
-    | ReturnType<typeof updateNewMessageText>
-    | ReturnType<typeof sendMessage>
-    | ReturnType<typeof follow>
-    | ReturnType<typeof unfollow>
-    | ReturnType<typeof setUsers>
-    | ReturnType<typeof setCurrentPage>
-    | ReturnType<typeof setTotalUsersCount>
-    | ReturnType<typeof toggleIsFetching>
-    | ReturnType<typeof setUserProfile>
-// TYPES
+export type AppActionTypes =
+    | UsersReducerActionTypes
+    | AuthReducerActionTypes
+    | ProfileReducerActionTypes
+    | DialoguesReducerActionTypes
+    | FormAction
+
+export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType,
+    ReduxRootStateType,
+    unknown,
+    AppActionTypes>;
 
 export const reduxReducer = combineReducers({
     profilePage: profileReducer,
     dialoguesPage: dialoguesReducer,
     usersPage: usersReducer,
     auth: authReducer,
+    form: formReducer
 
 });
 

@@ -1,24 +1,72 @@
-import {authAPI} from "../api/api";
+import {authAPI, ResultCode} from "../api/api";
 import {Dispatch} from "react";
+import {AppThunkType} from "./redux-store";
+import {stopSubmit} from "redux-form";
 
 export type InitialUsersStateType = typeof initialAuthUserState;
-export type AuthReducerActionTypes =
-    | ReturnType<typeof setAuthUserData>
+export type AuthReducerActionTypes = ReturnType<typeof setAuthUserData>
 const SET_USER_DATA = 'SET-USER-DATA';
 
-export type AuthType = {
-    id: number | null;
-    login: string | null;
-    email: string | null;
-    isAuth: boolean;
-};
+export const setAuthUserData = (
+    id: number | null,
+    email: string | null,
+    login: string | null,
+    isAuth: boolean
+) =>
+    ({
+        type: SET_USER_DATA,
+        payload: {
+            id,
+            email,
+            login,
+            isAuth,
+        },
+    } as const);
+
+export const getAuthUserData = (): AppThunkType => (dispatch: Dispatch<any>) => {
+    authAPI.me().then(promise => {
+        if (promise.resultCode === ResultCode.Success) {
+            dispatch(
+                setAuthUserData(promise.data.id, promise.data.email,
+                    promise.data.login, true)
+            );
+        }
+    });
+}
+
+export const login = (
+    email: string,
+    password: string,
+    rememberMe?: boolean
+): AppThunkType => (dispatch: Dispatch<any>) => {
+    authAPI.login(email, password, rememberMe).then(promise => {
+        if (promise.resultCode === ResultCode.Success) {
+            dispatch(getAuthUserData());
+        } else {
+            const errMessage = promise.messages.length
+                ? promise.messages[0]
+                : "Incorrect log in data";
+            dispatch(
+                stopSubmit("loginForm", {_error: errMessage})
+            );
+        }
+    });
+}
+
+export const logout = (): AppThunkType => (dispatch: Dispatch<any>) => {
+    authAPI.logout().then(promise => {
+        if (promise.resultCode === ResultCode.Success) {
+            dispatch(setAuthUserData(null, null, null, false));
+        }
+    });
+}
 
 const initialAuthUserState = {
-    id: null,
-    email: null,
-    login: null,
-    isAuth: false,
-} as AuthType;
+    id: null as number | null,
+    email: null as string | null,
+    login: null as string | null,
+    isAuth: false as boolean,
+}
 
 export const authReducer = (
     state: InitialUsersStateType = initialAuthUserState,
@@ -27,22 +75,12 @@ export const authReducer = (
         case SET_USER_DATA:
             return {
                 ...state,
-               ...action.data,
+                ...action.payload,
                 isAuth: true
             }
-
         default:
             return state;
     }
 };
-
-export const setAuthUserData = (initialAuthUserState: InitialUsersStateType) => ({type: SET_USER_DATA, data: initialAuthUserState} as const);
-export const getAuthUserData = () => (dispatch: Dispatch<any>) => {
-    authAPI.me().then(promise => {
-        if (promise.data.resultCode === 0) {
-            dispatch(setAuthUserData(promise.data.data));
-        }
-    });
-}
 
 export default authReducer;

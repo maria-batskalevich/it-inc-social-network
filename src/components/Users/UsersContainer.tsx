@@ -4,10 +4,11 @@ import {ReduxRootStateType} from "../../redux/redux-store";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
 import {
-    follow, getUsers, setCurrentPage, unfollow, UserType
+    follow, getUsers, setCurrentPage, unfollow
 } from "../../redux/usersReducer";
 import {compose} from 'redux';
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {UserType} from "../../api/api";
 
 
 type MapStatePropsType = {

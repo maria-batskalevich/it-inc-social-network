@@ -1,8 +1,5 @@
-import {ActionTypes} from "./redux-store";
-
 export type InitialDialoguesStateType = typeof initialDialoguesState;
 
-const UPDATE_NEW_MESSAGE_TEXT = "UPDATE-NEW-MESSAGE-TEXT";
 const SEND_MESSAGE = "SEND-MESSAGE";
 
 export type DialogueItemType = {
@@ -15,8 +12,7 @@ export type MessageType = {
 };
 
 type DialoguesInitialStateType = typeof initialDialoguesState;
-type DialoguesReducerActionTypes =
-    | ReturnType<typeof updateNewMessageText>
+export type DialoguesReducerActionTypes =
     | ReturnType<typeof sendMessage>;
 
 const initialDialoguesState = {
@@ -36,39 +32,33 @@ const initialDialoguesState = {
         {id: 5, messageText: "$500/month is not enough... We can do better!!!!"},
 
     ] as MessageType[],
-    newMessageText: "",
 };
+
 export const dialoguesReducer = (
     state: DialoguesInitialStateType = initialDialoguesState,
     action: DialoguesReducerActionTypes
 ): DialoguesInitialStateType => {
 
-
     switch (action.type) {
-        case UPDATE_NEW_MESSAGE_TEXT:
-            return {
+        case SEND_MESSAGE: {
+            const updatedState = {
                 ...state,
-                newMessageText: action.inputMessageText
-            }
-
-        case SEND_MESSAGE:
-            return {
-                ...state,
-                newMessageText: "",
-                messages: [...state.messages, {id: 6, messageText: state.newMessageText}]
-            }
+                messages: [...state.messages],
+            };
+            updatedState.messages.push({
+                id: updatedState.messages.length + 1,
+                messageText: action.newMessageText,
+            });
+            return updatedState;
+        }
 
         default:
             return state;
     }
-};
+}
 
-export const updateNewMessageText = (inputMessageText: string) =>
-    ({
-        type: UPDATE_NEW_MESSAGE_TEXT,
-        inputMessageText,
-    } as const);
-export const sendMessage = () =>
+export const sendMessage = (newMessageText: string) =>
     ({
         type: SEND_MESSAGE,
+        newMessageText
     } as const);

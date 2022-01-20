@@ -1,8 +1,8 @@
 import React from "react";
 import s from "./users.module.css";
 import user from "../../assets/images/user.png";
-import {UserType} from "../../redux/usersReducer";
 import {NavLink} from "react-router-dom";
+import {UserType} from "../../api/api";
 
 export type UsersPropsType = {
     totalUsersCount: number
@@ -26,7 +26,7 @@ export const Users = React.memo((props: UsersPropsType) => {
             <div>
                 {pages.map(p => {
                     return <span className={props.currentPage === p ? s.selectedPage : s.page}
-                                 onClick={(e) => {
+                                 onClick={() => {
                                      props.onPageChanged(p)
                                  }}> {p} </span>
                 })}
@@ -36,7 +36,7 @@ export const Users = React.memo((props: UsersPropsType) => {
                     <span>
                         <div>
                             <NavLink to={`/profile/${u.id}`}>
-                                <img className={s.avatar} src={u.photos.small ? u.photos.small : user}/>
+                                <img alt={'avatar'} className={s.avatar} src={u.photos.small ? u.photos.small : user}/>
                             </NavLink>
 
                         </div>
