@@ -98,10 +98,11 @@ export const toggleFollowingProgress = (userId: any, followingInProgress: boolea
 } as const);
 
 
-export const getUsers = (currentPage: any, pageSize: any):AppThunkType => (dispatch: Dispatch<any>) => {
+export const getUsers = (page: any, pageSize: any):AppThunkType => (dispatch: Dispatch<any>) => {
         dispatch(toggleIsFetching(true));
+        dispatch(setCurrentPage(page));
         usersAPI
-            .getUsers(currentPage, pageSize)
+            .getUsers(page, pageSize)
             .then(data => {
                 if(!data.error) {
                     dispatch(toggleIsFetching(false))

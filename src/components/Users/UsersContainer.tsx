@@ -8,6 +8,13 @@ import {
 } from "../../redux/usersReducer";
 import {compose} from 'redux';
 import {UserType} from "../../api/api";
+import {
+    selectCurrentPage, selectFollowingInProgress,
+    selectIsFetching,
+    selectPageSize,
+    selectTotalUsersCount,
+    selectUsers
+} from "../../redux/usersSelectors";
 
 
 type MapStatePropsType = {
@@ -58,14 +65,16 @@ class UsersContainer extends React.Component <UsersClassContainerPropsType,
 }
 
 const mapStateToProps = (state: ReduxRootStateType): MapStatePropsType => ({
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching,
-    followingInProgress: state.usersPage.followingInProgress
+    users: selectUsers(state),
+    pageSize: selectPageSize(state),
+    totalUsersCount: selectTotalUsersCount(state),
+    currentPage: selectCurrentPage(state),
+    isFetching: selectIsFetching(state),
+    followingInProgress: selectFollowingInProgress(state),
 
 }) as MapStatePropsType
+
+
 
 export default compose<React.ComponentType>(
     connect(mapStateToProps, {
