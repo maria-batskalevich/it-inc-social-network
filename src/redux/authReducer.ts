@@ -24,14 +24,15 @@ export const setAuthUserData = (
     } as const);
 
 export const getAuthUserData = (): AppThunkType => (dispatch: Dispatch<any>) => {
-    authAPI.me().then(promise => {
-        if (promise.resultCode === ResultCode.Success) {
-            dispatch(
-                setAuthUserData(promise.data.id, promise.data.email,
-                    promise.data.login, true)
-            );
-        }
-    });
+    return authAPI.me()
+        .then(promise => {
+            if (promise.resultCode === ResultCode.Success) {
+                dispatch(
+                    setAuthUserData(promise.data.id, promise.data.email,
+                        promise.data.login, true)
+                );
+            }
+        });
 }
 
 export const login = (
