@@ -2,7 +2,7 @@ import React from "react";
 import s from "./ProfileInfo.module.css";
 import { ProfilePropsType as ProfileInfoPropsType } from "../Profile";
 import {Preloader} from "../../common/Preloader/Preloader";
-import {ProfileStatus} from "./ProfileStatus";
+import {ProfileStatusWithHooks} from "./ProfileStatusWithHooks";
 
 export const ProfileInfo = (props: ProfileInfoPropsType) => {
     if(!props.userProfile.userId) {
@@ -18,8 +18,8 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
       </div>
       <div className={s.descriptionBlock}>
           Ava + description</div>
-        <img src={props.userProfile.photos.large} />
-        <ProfileStatus
+        <img alt={'users photo'} src={props.userProfile.photos.large} />
+        <ProfileStatusWithHooks
             status={props.status}
             updateUserStatus={props.updateUserStatus}/>
     </div>

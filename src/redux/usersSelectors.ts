@@ -1,7 +1,5 @@
-import React from "react";
 import {UserType} from "../api/api";
 import {ReduxRootStateType} from "./redux-store";
-
 
 export const selectUsers = (state: ReduxRootStateType): UserType[] => {
     return state.usersPage.users
