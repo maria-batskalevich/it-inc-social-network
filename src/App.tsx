@@ -19,7 +19,7 @@ type MapDispatchPropsType = {
 };
 type AppClassContainerPropsType = MapStatePropsType & MapDispatchPropsType;
 
-class AppClassContainer extends React.Component<AppClassContainerPropsType> {
+class AppClassContainer extends React.PureComponent<AppClassContainerPropsType> {
     componentDidMount() {
         initializeApp()
     }

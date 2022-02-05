@@ -1,12 +1,12 @@
-import {Dispatch} from "react";
 import {getAuthUserData} from "./authReducer";
+import {RootThunkType} from "./redux-store";
 
 const initialState = {
     initialized: false,
 }
 export type InitialStateType = typeof initialState;
 const SET_INITIALIZED = 'SET-INITIALIZED';
-export type AppReducerActionTypes = ReturnType<typeof initializingSuccess>
+export type AppReducerActionTypes = ReturnType<typeof setInitialized>
 
 export const appReducer = (
     state: InitialStateType = initialState,
@@ -22,14 +22,14 @@ export const appReducer = (
     }
 };
 
-export const initializingSuccess = () => ({type: SET_INITIALIZED})
+export const setInitialized = () => ({type: SET_INITIALIZED} as const)
 
-export const initializeApp = () => (dispatch: Dispatch<any>) => {
-    let promise = dispatch(getAuthUserData());
-    Promise.all([promise])
-        .then(() => {
-        dispatch(initializingSuccess())
-    })
+export const initializeApp = (): RootThunkType => async (dispatch) => {
+    try {
+        await dispatch(getAuthUserData());
+        dispatch(setInitialized());
+    } catch (e) {
+        console.log(e);
+        alert("An error has occurred. Please try again later.");
+    }
 }
-
-export default appReducer;

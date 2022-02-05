@@ -1,11 +1,12 @@
 import {profileAPI, ResultCode} from "../api/api";
-import {Dispatch} from "react";
+import {RootThunkType} from "./redux-store";
 
-export type InitialProfileStateType = typeof initialProfileState;
+export type profileInitialStateType = typeof profileInitialState;
 export type ProfileReducerActionTypes =
     | ReturnType<typeof addPost>
     | ReturnType<typeof setUserProfile>
-    | ReturnType<typeof setStatus>;
+    | ReturnType<typeof deletePost>
+    | ReturnType<typeof setUserStatus>;
 
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
@@ -41,71 +42,99 @@ export type UserProfileType = {
     photos: PhotosType;
 };
 
-const initialProfileState = {
-    posts: [] as PostType[],
-    newPostText: "",
+const profileInitialState = {
+    posts: [
+        {id: 1, postText: "hey!!", likesCount: 5},
+        {id: 2, postText: "how are u?", likesCount: 3},
+    ] as Array<PostType>,
     userProfile: {} as UserProfileType,
     status: '',
 };
 
 export const profileReducer = (
-    state: InitialProfileStateType = initialProfileState,
+    profileState: profileInitialStateType = profileInitialState,
     action: ProfileReducerActionTypes
-): InitialProfileStateType => {
+): profileInitialStateType => {
     switch (action.type) {
         case ADD_POST: {
-            const updatedState = {...state, posts: [...state.posts]}
+            const updatedState = {...profileState, posts: [...profileState.posts]}
             const newPost = {
-                id: 4,
+                id: updatedState.posts.length + 1,
                 postText: action.newPostText,
                 likesCount: 0,
             };
-            updatedState.posts.push(newPost);
-            updatedState.newPostText = '';
-            return updatedState
-            };
+            return {...updatedState, posts: [newPost, ...updatedState.posts]}
+        }
         case SET_USER_PROFILE: {
-            return {...state, userProfile: action.userProfile};
+            return {...profileState, userProfile: action.userProfile};
         }
         case SET_STATUS: {
             return {
-                ...state,
+                ...profileState,
                 status: action.status
             }
         }
+        case "DELETE_POST": {
+            return {
+                ...profileState,
+                posts: profileState.posts.filter((post) => post.id !== action.postID),
+            };
+        }
         default:
-            return state;
+            return profileState;
     }
 };
 
-export const addPost = (newPostText: string) => ({type: ADD_POST, newPostText} as const);
+export const addPost = (newPostText: string) =>
+    ({
+        type: ADD_POST, newPostText
+    } as const);
+export const deletePost = (postID: number) =>
+    ({
+        type: "DELETE_POST",
+        postID,
+    } as const);
 export const setUserProfile = (userProfile: UserProfileType) => ({
     type: SET_USER_PROFILE,
     userProfile,
 } as const)
-export const setStatus = (status: string) => ({
+export const setUserStatus = (status: string) => ({
     type: SET_STATUS,
     status,
 } as const)
 
-export const getUserProfile = (userId: any) => (dispatch: Dispatch<any>) => {
-    profileAPI.getProfile(userId).then(response => {
-        dispatch(setUserProfile(response))
-    })
-}
-
-export const getUserStatus = (userId: any) => (dispatch: any) => {
-    profileAPI.getStatus(userId)
-        .then(response => {
-            dispatch(setStatus(response))
-        })
-}
-
-export const updateUserStatus = (status: string) => (dispatch: any) => {
-    profileAPI.updateUserStatus(status)
-        .then(response => {
-            if (response.resultCode === ResultCode.Success) {
-                dispatch(setStatus(status))
-            }
-        })
-}
+export const getUserProfile = (userID: number): RootThunkType => async (
+    dispatch
+) => {
+    try {
+        const res = await profileAPI.getProfile(userID);
+        dispatch(setUserProfile(res));
+    } catch (e) {
+        console.log(e);
+        alert("An error has occurred. Please try again later.");
+    }
+};
+export const getUserStatus = (userID: number): RootThunkType => async (
+    dispatch
+) => {
+    try {
+        const res = await profileAPI.getStatus(userID);
+        dispatch(setUserStatus(res));
+    } catch (e) {
+        console.log(e);
+        alert("An error has occurred. Please try again later.");
+    }
+};
+export const updateUserStatus = (status: string): RootThunkType => async (
+    dispatch
+) => {
+    try {
+        const res = await profileAPI.updateUserStatus(status);
+        if (res.resultCode === ResultCode.Success) {
+            dispatch(setUserStatus(status));
+        }
+    } catch (e) {
+        console.log(e);
+        alert("An error has occurred. Please try again later.");
+    }
+};

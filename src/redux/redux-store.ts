@@ -8,10 +8,10 @@ import {
 import {
     usersReducer, UsersReducerActionTypes
 } from "./usersReducer";
-import authReducer, {AuthReducerActionTypes} from "./authReducer";
+import {authReducer, AuthReducerActionTypes} from "./authReducer";
 import thunkMiddleware, {ThunkAction} from 'redux-thunk'
 import {FormAction, reducer as formReducer} from 'redux-form'
-import appReducer from "./appReducer";
+import {appReducer} from "./appReducer";
 
 export type ReduxRootStateType = ReturnType<typeof reduxReducer>;
 export type ReduxStoreType = typeof reduxStore;
@@ -23,7 +23,8 @@ export type AppActionTypes =
     | DialoguesReducerActionTypes
     | FormAction
 
-export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType,
+export type RootThunkType<ReturnType = void> = ThunkAction<
+    ReturnType,
     ReduxRootStateType,
     unknown,
     AppActionTypes>;

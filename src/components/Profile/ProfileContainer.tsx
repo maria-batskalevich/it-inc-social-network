@@ -26,7 +26,7 @@ type ProfileClassContainerURLPropsType = RouteComponentProps<ProfilePathParamsTy
     ProfileClassContainerPropsType;
 
 
-class ProfileClassContainer extends React.Component<ProfileClassContainerURLPropsType,
+class ProfileClassContainer extends React.PureComponent<ProfileClassContainerURLPropsType,
     UserProfileType> {
 
     componentDidMount() {

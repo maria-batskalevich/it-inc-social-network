@@ -2,10 +2,10 @@ import React from "react";
 import s from "./Message.module.css";
 
 export type MessagePropsType = {
-  id: number;
-  messageText: string;
+    id: number;
+    messageText: string;
 };
 
-export const Message = (props: MessagePropsType) => {
-  return <div className={s.message}>{props.messageText}</div>;
-};
+export const Message = React.memo(({messageText}: MessagePropsType) => {
+    return <div className={s.message}>{messageText}</div>;
+});

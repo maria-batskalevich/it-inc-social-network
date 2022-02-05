@@ -1,16 +1,15 @@
 import {ResultCode, usersAPI, UserType} from "../api/api";
-import {Dispatch} from "react";
-import {AppThunkType} from "./redux-store";
+import {RootThunkType} from "./redux-store";
 
-export type InitialUsersStateType = typeof initialUsersState;
+export type UsersInitialStateType = typeof usersInitialState;
 export type UsersReducerActionTypes =
-    ReturnType<typeof followSuccess>
+    | ReturnType<typeof followSuccess>
     | ReturnType<typeof unfollowSuccess>
     | ReturnType<typeof setUsers>
     | ReturnType<typeof setCurrentPage>
     | ReturnType<typeof setTotalUsersCount>
-    | ReturnType<typeof toggleIsFetching>
-    | ReturnType<typeof toggleFollowingProgress>;
+    | ReturnType<typeof setIsFetching>
+    | ReturnType<typeof setFollowingProgress>;
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -20,19 +19,12 @@ const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS'
 
-// export type UserType = {
-//     id: number,
-//     name: string,
-//     status: string,
-//     followed: boolean,
-//     photos: PhotosType,
-// }
 
 type PhotosType = {
     small: string,
     large: string,
 }
-const initialUsersState = {
+const usersInitialState = {
     users: [] as UserType[],
     pageSize: 50,
     totalUsersCount: 0,
@@ -42,8 +34,8 @@ const initialUsersState = {
 };
 
 export const usersReducer = (
-    state: InitialUsersStateType = initialUsersState,
-    action: UsersReducerActionTypes) => {
+    state = usersInitialState,
+    action: UsersReducerActionTypes): UsersInitialStateType => {
     switch (action.type) {
         case FOLLOW:
             return {
@@ -90,48 +82,53 @@ export const setTotalUsersCount = (totalUsersCount: number) => ({
     type: SET_TOTAL_USERS_COUNT,
     totalUsersCount
 } as const);
-export const toggleIsFetching = (isFetching: boolean) => ({type: TOGGLE_IS_FETCHING, isFetching} as const);
-export const toggleFollowingProgress = (userId: any, followingInProgress: boolean) => ({
+export const setIsFetching = (isFetching: boolean) => ({type: TOGGLE_IS_FETCHING, isFetching} as const);
+export const setFollowingProgress = (userId: any, followingInProgress: boolean) => ({
     type: TOGGLE_IS_FOLLOWING_PROGRESS,
     userId,
     followingInProgress
 } as const);
 
 
-export const getUsers = (page: any, pageSize: any):AppThunkType => (dispatch: Dispatch<any>) => {
-        dispatch(toggleIsFetching(true));
-        dispatch(setCurrentPage(page));
-        usersAPI
-            .getUsers(page, pageSize)
-            .then(data => {
-                if(!data.error) {
-                    dispatch(toggleIsFetching(false))
-                    dispatch(setUsers(data.items));
-                    dispatch(setTotalUsersCount(data.totalCount));
-                }
-
-            });
+export const getUsers = (currentPage: any, pageSize: any): RootThunkType => async (dispatch) => {
+    dispatch(setIsFetching(true));
+    try {
+        const res = await usersAPI.getUsers(currentPage, pageSize);
+        if (!res.error) {
+            dispatch(setUsers(res.items))
+            dispatch(setTotalUsersCount(res.totalCount))
+        }
+    } catch (e) {
+        console.log(e);
+        alert("An error has occurred. Please try again later.");
+    }
+    dispatch(setIsFetching(false))
 }
-export const follow = (userId: any): AppThunkType => (dispatch: Dispatch<any>) => {
-        dispatch(toggleFollowingProgress(userId, true))
-        usersAPI.follow(userId)
-            .then(promise => {
-                if (promise.resultCode === ResultCode.Success) {
-                    dispatch(followSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(userId, false))
-            })
-}
+export const follow = (userId: any): RootThunkType => async (dispatch) => {
+    dispatch(setFollowingProgress(userId, true))
+    try {
+        const res = await usersAPI.follow(userId);
+        if (res.resultCode === ResultCode.Success) {
+            dispatch(followSuccess(userId));
+        }
+    } catch (e) {
+        console.log(e);
+        alert("An error has occurred. Please try again later.");
+    }
+    dispatch(setFollowingProgress(userId, false));
+};
 
-export const unfollow = (userId: any): AppThunkType => (dispatch: Dispatch<any>) => {
-        dispatch(toggleFollowingProgress(userId, true))
-        usersAPI.unfollow(userId)
-            .then(promise => {
-                if (promise.resultCode === ResultCode.Success) {
-                    dispatch(unfollowSuccess(userId))
-                }
-                dispatch(toggleFollowingProgress(userId, false))
-            })
-}
-
+export const unfollow = (userId: any): RootThunkType => async (dispatch) => {
+    dispatch(setFollowingProgress(userId, true));
+    try {
+        const res = await usersAPI.unfollow(userId);
+        if (res.resultCode === ResultCode.Success) {
+            dispatch(unfollowSuccess(userId));
+        }
+    } catch (e) {
+        console.log(e);
+        alert("An error has occurred. Please try again later.");
+    }
+    dispatch(setFollowingProgress(userId, false));
+};
 

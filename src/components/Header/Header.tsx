@@ -8,22 +8,24 @@ type HeaderPropsType = {
     logout: () => void
 };
 
-export const Header = (props:HeaderPropsType ) => {
-  return (
-    <header className={s.header}>
-      <img
-        src={"https://cdn.logo.com/hotlink-ok/logo-social-sq.png"}
-        alt={"Logo"}
-      />
-        <div className={s.loginBlock}>
-            {props.isAuth ? (
-                <div>
-                    {props.login} - <button onClick={props.logout}>Log out</button>
+export const Header = React.memo(
+    ({ isAuth, login, logout }: HeaderPropsType) => {
+        return (
+            <header className={s.header}>
+                <img
+                    src={"https://cdn.logo.com/hotlink-ok/logo-social-sq.png"}
+                    alt={"Logo"}
+                />
+                <div className={s.loginBlock}>
+                    {isAuth ? (
+                        <div>
+                            {login} - <button onClick={logout}>Log out</button>
+                        </div>
+                    ) : (
+                        <NavLink to={"/login"}>Log in</NavLink>
+                    )}
                 </div>
-            ) : (
-                <NavLink to={"/login"}>Log in</NavLink>
-            )}
-        </div>
-    </header>
-  );
-};
+            </header>
+        );
+    }
+);

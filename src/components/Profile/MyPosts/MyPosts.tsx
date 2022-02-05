@@ -1,25 +1,23 @@
 import React from "react";
 import s from "./MyPosts.module.css";
-import {Post, PostPropsType as PostType} from "./Post/Post";
 import AddPostForm, {AddPostFormDataType} from "./AddPostForm/AddPostForm";
+import {MyPostsPropsType} from "./MyPostsContainer";
+import {Post} from "./Post/Post";
 
-type MyPostsPropsType = {
-    posts: Array<PostType>;
-    newPostText: string;
-    addPost: (newPostText: string) => void;
-};
-
-export const MyPosts = (props: MyPostsPropsType) => {
-    const postsElements = props.posts.map((post) => (
+export const MyPosts = React.memo(
+    ({posts, addPost, deletePost}: MyPostsPropsType) => {
+    const postsElements = posts.map((post) => (
         <Post
             key={post.id}
             postText={post.postText}
             likesCount={post.likesCount}
-            id={post.id}/>
+            id={post.id}
+            deletePost={deletePost}
+        />
     ));
 
     const onPostAdding = (values: AddPostFormDataType) => {
-        props.addPost(values.newPostText);
+        addPost(values.newPostText);
     };
 
     return (
@@ -31,4 +29,4 @@ export const MyPosts = (props: MyPostsPropsType) => {
             <div className={s.posts}>{postsElements}</div>
         </div>
     );
-};
+});

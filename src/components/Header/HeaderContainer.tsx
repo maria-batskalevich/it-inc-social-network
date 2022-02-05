@@ -15,7 +15,7 @@ type MapDispatchPropsType = {
 
 type HeaderClassContainerPropsType = MapStatePropsType & MapDispatchPropsType;
 
-export class HeaderClassContainer extends React.Component<HeaderClassContainerPropsType> {
+export class HeaderClassContainer extends React.PureComponent<HeaderClassContainerPropsType> {
 
     render = () => {
         return <Header {...this.props}/>

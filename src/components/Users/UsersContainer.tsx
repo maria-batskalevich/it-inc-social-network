@@ -34,7 +34,7 @@ type MapDispatchPropsType = {
 
 export type UsersClassContainerPropsType = MapStatePropsType & MapDispatchPropsType;
 
-class UsersContainer extends React.Component <UsersClassContainerPropsType,
+class UsersContainer extends React.PureComponent <UsersClassContainerPropsType,
     Array<UserType>> {
 
     componentDidMount() {

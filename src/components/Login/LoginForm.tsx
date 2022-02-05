@@ -11,9 +11,9 @@ export type LoginFormDataType = {
 };
 
 const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = React.memo(
-    (props) => {
+    ({handleSubmit, error}) => {
         return (
-            <form onSubmit={props.handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <Field
                         component={Input}
@@ -35,8 +35,8 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = React.memo(
                     <Field component={Input} name={"rememberMe"} type={"checkbox"} />
                     Remember me
                 </div>
-                {props.error && (
-                    <div className={classes.formLevelError}>{props.error}</div>
+                {error && (
+                    <div className={classes.formLevelError}>{error}</div>
                 )}
                 <div>
                     <button>Log in</button>

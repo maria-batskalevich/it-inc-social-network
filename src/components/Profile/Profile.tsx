@@ -10,15 +10,17 @@ export type ProfilePropsType = {
 
 };
 
-export const Profile = (props: ProfilePropsType) => {
+export const Profile = React.memo(
+    ({userProfile, updateUserStatus, status}: ProfilePropsType) => {
     return (
         <div>
             <ProfileInfo
-                userProfile={props.userProfile}
-                status={props.status}
-                updateUserStatus={props.updateUserStatus}
+                userProfile={userProfile}
+                status={status}
+                updateUserStatus={updateUserStatus}
             />
             <MyPostsContainer/>
         </div>
     );
-};
+}
+);

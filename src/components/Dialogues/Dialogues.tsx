@@ -4,7 +4,6 @@ import {
     DialogueItem,
 } from "./DialogueItem/DialogueItem";
 import {Message} from "./Message/Message";
-import AddMessageForm, {AddMessageFormDataType} from "./AddMessageForm/AddMessageForm";
 import {DialoguesPropsType} from "./DialoguesContainer";
 
 export const Dialogues = React.memo((props: DialoguesPropsType) => {
@@ -23,9 +22,9 @@ export const Dialogues = React.memo((props: DialoguesPropsType) => {
                 id={message.id}/>
         ));
 
-        const addNewMessage = (values: AddMessageFormDataType) => {
-            props.sendMessage(values.newMessageText);
-        };
+        // const addNewMessage = (values: AddMessageFormDataType) => {
+        //     sendMessage(values.newMessageText);
+        // };
 
         return (
             <div className={s.dialoguesPage}>
@@ -33,7 +32,7 @@ export const Dialogues = React.memo((props: DialoguesPropsType) => {
                 <div className={s.messagesList}>
                     <div>{messageElements}</div>
                     <div>
-                        <AddMessageForm onSubmit={addNewMessage}/>
+                        {/*<AddMessageForm onSubmit={addNewMessage}/>*/}
                     </div>
                 </div>
             </div>
