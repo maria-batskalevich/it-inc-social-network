@@ -55,9 +55,10 @@ let mapStateToProps = (state: ReduxRootStateType): MapStatePropsType => ({
     status: state.profilePage.status
 })
 
-export default compose<React.ComponentType>(
+const ProfileContainer = compose<React.ComponentType>(
     connect(mapStateToProps, {getUserProfile, getUserStatus, updateUserStatus}),
     withRouter,
     // withAuthRedirect
 )
 (ProfileClassContainer)
+export default ProfileContainer;

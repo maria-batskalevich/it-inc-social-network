@@ -11,4 +11,4 @@ export const maxLengthCreator = (maxLength: number) => (value: string) => {
     return `Max length is ${maxLength} symbols`
 }
 
-export const maxLenght100 = maxLengthCreator(100)
+export const maxLenght20 = maxLengthCreator(20)

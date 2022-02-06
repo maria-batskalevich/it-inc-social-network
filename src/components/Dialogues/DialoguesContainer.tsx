@@ -25,9 +25,11 @@ const mapStateToProps = (state: ReduxRootStateType): MapStatePropsType => {
     }
 }
 
-export default compose<React.ComponentType>(
+const DialoguesContainer = compose<React.ComponentType>(
     connect<MapStatePropsType, MapDispatchPropsType, unknown, ReduxRootStateType>(
         mapStateToProps,
         { sendMessage }),
     withAuthRedirect)
 (Dialogues);
+
+export default DialoguesContainer;

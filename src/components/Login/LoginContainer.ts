@@ -1,7 +1,7 @@
-import { ReduxRootStateType } from "../../redux/redux-store";
-import { Login } from "./Login";
-import { connect } from "react-redux";
-import { login } from "../../redux/authReducer";
+import {ReduxRootStateType} from "../../redux/redux-store";
+import {Login} from "./Login";
+import {connect} from "react-redux";
+import {login} from "../../redux/authReducer";
 
 type MapStatePropsType = {
     isAuth: boolean;
@@ -15,9 +15,8 @@ const mapStateToProps = (state: ReduxRootStateType): MapStatePropsType => ({
     isAuth: state.auth.isAuth,
 });
 
-export const LoginContainer = connect<
-    MapStatePropsType,
+const LoginContainer = connect<MapStatePropsType,
     MapDispatchPropsType,
     unknown,
-    ReduxRootStateType
-    >(mapStateToProps, { login })(Login);
+    ReduxRootStateType>(mapStateToProps, {login})(Login);
+export default LoginContainer;

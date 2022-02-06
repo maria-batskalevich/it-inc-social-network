@@ -32,6 +32,7 @@ export const Users = React.memo(
                     onPageChange={onPageChanged}
                     pageSize={pageSize}
                     totalItemsCount={totalUsersCount}
+                    portionSize={10}
                 />
                 {users.map((user) => (
                     <User

@@ -6,7 +6,6 @@ import {Preloader} from "../common/Preloader/Preloader";
 import {
     follow, getUsers, setCurrentPage, unfollow
 } from "../../redux/usersReducer";
-import {compose} from 'redux';
 import {UserType} from "../../api/api";
 import {
     selectCurrentPage, selectFollowingInProgress,
@@ -34,7 +33,7 @@ type MapDispatchPropsType = {
 
 export type UsersClassContainerPropsType = MapStatePropsType & MapDispatchPropsType;
 
-class UsersContainer extends React.PureComponent <UsersClassContainerPropsType,
+class UsersClassContainer extends React.PureComponent <UsersClassContainerPropsType,
     Array<UserType>> {
 
     componentDidMount() {
@@ -76,11 +75,11 @@ const mapStateToProps = (state: ReduxRootStateType): MapStatePropsType => ({
 
 
 
-export default compose<React.ComponentType>(
-    connect(mapStateToProps, {
+const UsersContainer = connect<MapStatePropsType, MapDispatchPropsType, unknown, ReduxRootStateType>
+(mapStateToProps, {
         follow, unfollow, setCurrentPage, getUsers,
-    })
-)
-(UsersContainer)
+    })(UsersClassContainer)
+
+export default UsersContainer;
 
 
