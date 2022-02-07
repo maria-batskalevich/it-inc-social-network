@@ -22,14 +22,19 @@ export const appReducer = (
     }
 };
 
-export const setInitialized = () => ({type: SET_INITIALIZED} as const)
+export const setInitialized = (isInitialized: boolean) =>
+    ({
+        type: SET_INITIALIZED,
+        payload: {
+            isInitialized,
+        },
+    } as const);
 
 export const initializeApp = (): RootThunkType => async (dispatch) => {
     try {
         await dispatch(getAuthUserData());
-        dispatch(setInitialized());
+        dispatch(setInitialized(true));
     } catch (e) {
-        console.log(e);
-        alert("An error has occurred. Please try again later.");
+        console.warn(e);
     }
 }

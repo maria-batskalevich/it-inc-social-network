@@ -2,7 +2,7 @@ import React from "react";
 
 type FieldValidatorType = (value: string) => string | null;
 
-export const required: FieldValidatorType  = (value) => {
+export const requiredField: FieldValidatorType  = (value) => {
     if(value) return null
     return 'Field is required'
 }

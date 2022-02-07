@@ -50,4 +50,4 @@ export const store = createStore(
 );
 
 // @ts-ignore
-window.__store__ = store;
+window.store = store;

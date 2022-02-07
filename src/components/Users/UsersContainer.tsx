@@ -6,7 +6,6 @@ import {Preloader} from "../common/Preloader/Preloader";
 import {
     follow, getUsers, setCurrentPage, unfollow
 } from "../../redux/usersReducer";
-import {UserType} from "../../api/api";
 import {
     selectCurrentPage, selectFollowingInProgress,
     selectIsFetching,
@@ -14,16 +13,11 @@ import {
     selectTotalUsersCount,
     selectUsers
 } from "../../redux/usersSelectors";
+import {selectIsAuth} from "../../redux/authSelectors";
 
 
-type MapStatePropsType = {
-    users: Array<UserType>,
-    pageSize: number,
-    totalUsersCount: number,
-    currentPage: number,
-    isFetching: boolean,
-    followingInProgress: Array<number>,
-};
+type MapStatePropsType = ReturnType<typeof mapStateToProps>;
+
 type MapDispatchPropsType = {
     follow: (userId: any) => void;
     unfollow: (userId: any) => void;
@@ -33,8 +27,7 @@ type MapDispatchPropsType = {
 
 export type UsersClassContainerPropsType = MapStatePropsType & MapDispatchPropsType;
 
-class UsersClassContainer extends React.PureComponent <UsersClassContainerPropsType,
-    Array<UserType>> {
+class UsersClassContainer extends React.PureComponent <UsersClassContainerPropsType> {
 
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize);
@@ -57,28 +50,28 @@ class UsersClassContainer extends React.PureComponent <UsersClassContainerPropsT
                        follow={this.props.follow}
                        unfollow={this.props.unfollow}
                        followingInProgress={this.props.followingInProgress}
+                       isAuth={this.props.isAuth}
                 />
             </>
         )
     }
 }
 
-const mapStateToProps = (state: ReduxRootStateType): MapStatePropsType => ({
+const mapStateToProps = (state: ReduxRootStateType) => ({
     users: selectUsers(state),
     pageSize: selectPageSize(state),
     totalUsersCount: selectTotalUsersCount(state),
     currentPage: selectCurrentPage(state),
     isFetching: selectIsFetching(state),
     followingInProgress: selectFollowingInProgress(state),
-
-}) as MapStatePropsType
-
+    isAuth: selectIsAuth(state),
+})
 
 
 const UsersContainer = connect<MapStatePropsType, MapDispatchPropsType, unknown, ReduxRootStateType>
 (mapStateToProps, {
-        follow, unfollow, setCurrentPage, getUsers,
-    })(UsersClassContainer)
+    follow, unfollow, setCurrentPage, getUsers,
+})(UsersClassContainer)
 
 export default UsersContainer;
 

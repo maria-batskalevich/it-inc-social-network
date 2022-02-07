@@ -1,7 +1,7 @@
 import React from "react";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Textarea} from "../../../common/FormControls/FormControls";
-import {maxLenght20, required} from "../../../../utils/validators/validators";
+import {maxLenght20, requiredField} from "../../../../utils/validators/validators";
 import s from './AddPostForm.module.css'
 
 
@@ -18,7 +18,7 @@ const AddPostForm: React.FC<InjectedFormProps<AddPostFormDataType>
                     component={Textarea}
                     placeholder={"Post text"}
                     name={"newPostText"}
-                    validate={[required, maxLenght20]}
+                    validate={[requiredField, maxLenght20]}
                 />
             </div>
             <div>

@@ -1,5 +1,5 @@
 import React from "react";
-import {UserType} from "../../api/api";
+import {UserType} from "../../api/API";
 import {User} from "./User/User";
 import {Paginator} from "../common/Paginator/Paginator";
 
@@ -12,6 +12,7 @@ export type UsersPropsType = {
     follow: (userId: any) => void
     unfollow: (userId: any) => void
     followingInProgress: Array<number>
+    isAuth: boolean;
 }
 
 export const Users = React.memo(
@@ -24,6 +25,7 @@ export const Users = React.memo(
          followingInProgress,
          follow,
          unfollow,
+         isAuth,
      }: UsersPropsType) => {
         return (
             <div>
@@ -41,6 +43,7 @@ export const Users = React.memo(
                         followingInProgress={followingInProgress}
                         follow={follow}
                         unfollow={unfollow}
+                        isAuth={isAuth}
                     />
                 ))}
             </div>

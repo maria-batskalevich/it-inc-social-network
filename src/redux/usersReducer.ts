@@ -1,4 +1,4 @@
-import {ResultCode, usersAPI, UserType} from "../api/api";
+import {ResultCode, usersAPI, UserType} from "../api/API";
 import {RootThunkType} from "./redux-store";
 
 export type UsersInitialStateType = typeof usersInitialState;
@@ -40,33 +40,25 @@ export const usersReducer = (
         case FOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)
+                users: state.users.map(u => u.id === action.payload.userId ? {...u, followed: true} : u)
             }
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)
+                users: state.users.map(u => u.id === action.payload.userId ? {...u, followed: false} : u)
             }
         case SET_USERS:
-            return {...state, users: [...action.users]}
-
         case SET_CURRENT_PAGE:
-            return {
-                ...state, currentPage: action.currentPage
-            }
         case SET_TOTAL_USERS_COUNT:
-            return {
-                ...state, totalUsersCount: action.totalUsersCount
-            }
         case TOGGLE_IS_FETCHING:
-            return {...state, isFetching: action.isFetching}
+            return {...state, ...action.payload}
 
         case TOGGLE_IS_FOLLOWING_PROGRESS:
             return {
                 ...state,
-                followingInProgress: action.followingInProgress
-                    ? [...state.followingInProgress, action.userId]
-                    : state.followingInProgress.filter(id => id !== Number(action.userId))
+                followingInProgress: action.payload.followingInProgress
+                    ? [...state.followingInProgress, action.payload.userId]
+                    : state.followingInProgress.filter(id => id !== Number(action.payload.userId))
             }
 
         default:
@@ -74,19 +66,44 @@ export const usersReducer = (
     }
 };
 
-export const followSuccess = (userId: any) => ({type: FOLLOW, userId} as const);
-export const unfollowSuccess = (userId: any) => ({type: UNFOLLOW, userId} as const);
-export const setUsers = (users: UserType[]) => ({type: SET_USERS, users} as const);
-export const setCurrentPage = (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage} as const);
+export const followSuccess = (userId: any) => ({
+    type: FOLLOW, payload: {
+        userId,
+    },
+} as const);
+export const unfollowSuccess = (userId: any) => ({
+    type: UNFOLLOW, payload: {
+        userId,
+    },
+} as const);
+export const setUsers = (users: UserType[]) => ({
+    type: SET_USERS, payload: {
+        users,
+    },
+} as const);
+export const setCurrentPage = (currentPage: number) => ({
+    type: SET_CURRENT_PAGE, payload: {
+        currentPage,
+    },
+} as const);
 export const setTotalUsersCount = (totalUsersCount: number) => ({
     type: SET_TOTAL_USERS_COUNT,
-    totalUsersCount
+    payload: {
+        totalUsersCount,
+    },
 } as const);
-export const setIsFetching = (isFetching: boolean) => ({type: TOGGLE_IS_FETCHING, isFetching} as const);
+export const setIsFetching = (isFetching: boolean) => ({
+    type: TOGGLE_IS_FETCHING,
+    payload: {
+        isFetching,
+    },
+} as const);
 export const setFollowingProgress = (userId: any, followingInProgress: boolean) => ({
     type: TOGGLE_IS_FOLLOWING_PROGRESS,
-    userId,
-    followingInProgress
+    payload: {
+        userId,
+        followingInProgress,
+    },
 } as const);
 
 
@@ -97,10 +114,13 @@ export const getUsers = (currentPage: any, pageSize: any): RootThunkType => asyn
         if (!res.error) {
             dispatch(setUsers(res.items))
             dispatch(setTotalUsersCount(res.totalCount))
+        } else {
+            const errMessage = res.error;
+            alert(errMessage);
+            console.warn(errMessage);
         }
     } catch (e) {
-        console.log(e);
-        alert("An error has occurred. Please try again later.");
+        console.warn(e);
     }
     dispatch(setIsFetching(false))
 }
@@ -110,10 +130,13 @@ export const follow = (userId: any): RootThunkType => async (dispatch) => {
         const res = await usersAPI.follow(userId);
         if (res.resultCode === ResultCode.Success) {
             dispatch(followSuccess(userId));
+        } else {
+            const errMessage = res.messages[0];
+            alert(errMessage);
+            console.warn(errMessage);
         }
     } catch (e) {
-        console.log(e);
-        alert("An error has occurred. Please try again later.");
+        console.warn(e);
     }
     dispatch(setFollowingProgress(userId, false));
 };
@@ -124,10 +147,13 @@ export const unfollow = (userId: any): RootThunkType => async (dispatch) => {
         const res = await usersAPI.unfollow(userId);
         if (res.resultCode === ResultCode.Success) {
             dispatch(unfollowSuccess(userId));
+        } else {
+            const errMessage = res.messages[0];
+            alert(errMessage);
+            console.warn(errMessage);
         }
     } catch (e) {
-        console.log(e);
-        alert("An error has occurred. Please try again later.");
+        console.warn(e);
     }
     dispatch(setFollowingProgress(userId, false));
 };

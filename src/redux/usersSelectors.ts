@@ -1,4 +1,4 @@
-import {UserType} from "../api/api";
+import {UserType} from "../api/API";
 import {ReduxRootStateType} from "./redux-store";
 
 export const selectUsers = (state: ReduxRootStateType): UserType[] => {

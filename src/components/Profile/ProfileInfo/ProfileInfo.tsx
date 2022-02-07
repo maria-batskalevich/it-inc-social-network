@@ -1,11 +1,29 @@
 import React from "react";
 import s from "./ProfileInfo.module.css";
-import {ProfilePropsType as ProfileInfoPropsType} from "../Profile";
 import {Preloader} from "../../common/Preloader/Preloader";
-import {ProfileStatusWithHooks} from "./ProfileStatusWithHooks";
+import {UserProfileType} from "../../../api/API";
+import {ProfilePhoto} from "./ProfilePhoto/ProfilePhoto";
+
+type ProfileInfoPropsType = {
+    userProfile: UserProfileType;
+    status: string;
+    updateProfileStatus: (status: string) => void;
+    isProfileOwner: boolean;
+    updateProfilePhoto: (photo: File) => void;
+};
+
+function ProfileStatusWithHooks(props: { updateProfileStatus: (status: string) => void, status: string }) {
+    return null;
+}
 
 export const ProfileInfo = React.memo(
-    ({userProfile, updateUserStatus, status}: ProfileInfoPropsType) => {
+    ({
+         userProfile,
+         updateProfileStatus,
+         status,
+         isProfileOwner,
+         updateProfilePhoto,
+     }: ProfileInfoPropsType) => {
         if (!userProfile.userId) {
             return <Preloader/>
         } else
@@ -18,12 +36,16 @@ export const ProfileInfo = React.memo(
                         />
                     </div>
                     <div className={s.descriptionBlock}>
-                        Ava + description
+                        <ProfilePhoto
+                            updateProfilePhoto={updateProfilePhoto}
+                            isProfileOwner={isProfileOwner}
+                            profilePhoto={userProfile.photos.large}
+                        />
                     </div>
                     <img alt={'users photo'} src={userProfile.photos.large}/>
                     <ProfileStatusWithHooks
                         status={status}
-                        updateUserStatus={updateUserStatus}/>
+                        updateProfileStatus={updateProfileStatus}/>
                 </div>
             );
     }

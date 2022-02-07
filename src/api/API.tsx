@@ -12,7 +12,7 @@ export type UserProfileType = {
     lookingForAJob: boolean;
     lookingForAJobDescription: string;
     fullName: string;
-    contacts: UserContactsType;
+    contacts: ProfileContactsType;
     photos: PhotosType;
 };
 export type UserType = {
@@ -32,7 +32,7 @@ type GetMeDataResponseType = {
     email: string;
     login: string;
 };
-type UserContactsType = {
+export type ProfileContactsType = {
     github: string;
     vk: string;
     facebook: string;
@@ -42,7 +42,7 @@ type UserContactsType = {
     youtube: string;
     mainLink: string;
 };
-type PhotosType = {
+export type PhotosType = {
     small: string;
     large: string;
 };
@@ -94,6 +94,18 @@ export const profileAPI = {
             .put<ResponseType>(`profile/status`, {status: status})
             .then((promise) => promise.data)
     },
+    updatePhoto(image: File) {
+        const formData = new FormData();
+        formData.append("image", image); // creating formData object to send file to server
+
+        return instance
+            .put<ResponseType<{ photos: PhotosType }>>(`profile/photo`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then((promise) => promise.data);
+    },
 }
 
 export const authAPI = {
@@ -102,12 +114,14 @@ export const authAPI = {
             .get<ResponseType<GetMeDataResponseType>>(`auth/me`)
             .then((promise) => promise.data)
     },
-    login(email: string, password: string, rememberMe?: boolean) {
+    login(email: string, password: string, rememberMe?: boolean, captcha?: string) {
         return instance
             .post<ResponseType<{ userId?: number }>>(`auth/login`, {
                 email,
                 password,
-                rememberMe})
+                rememberMe,
+                captcha,
+            })
             .then((promise) => promise.data)
     },
     logout() {
@@ -116,6 +130,14 @@ export const authAPI = {
             .then((promise) => promise.data)
     },
 }
+
+export const securityAPI = {
+    getCaptcha() {
+        return instance
+            .get<{ url: string }>(`security/get-captcha-url`)
+            .then((promise) => promise.data);
+    },
+};
 
 
 

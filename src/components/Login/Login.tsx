@@ -3,17 +3,16 @@ import {LoginPropsType} from "./LoginContainer";
 import LoginForm, {LoginFormDataType} from "./LoginForm";
 import {Redirect} from "react-router-dom";
 
-export const Login = React.memo(({ login, isAuth }: LoginPropsType) => {
+export const Login = React.memo(({ login, isAuth, captchaURL  }: LoginPropsType) => {
     const onSubmit = (formData: LoginFormDataType) =>
         login(formData.email, formData.password, formData.rememberMe);
-    // props.login !== loginTC , connect()() from LoginContainer passed eponymous callback via props, which dispatches loginTC inside of itself !
 
     if (isAuth) return <Redirect to={"/profile"} />;
     else
         return (
             <div>
                 <h1>Log in</h1>
-                <LoginForm onSubmit={onSubmit} />
+                <LoginForm onSubmit={onSubmit} captchaURL={captchaURL} />
             </div>
         );
 });

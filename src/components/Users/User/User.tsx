@@ -1,7 +1,7 @@
-import {UserType} from "../../../api/api";
+import {UserType} from "../../../api/API";
 import React from "react";
 import {NavLink} from "react-router-dom";
-import userAvatar from "../../../assets/images/user.png";
+import userAvatar from "../../../assets/images/userAvatar.png";
 import s from "../User/User.module.css";
 
 type UserPropsType = {
@@ -9,10 +9,11 @@ type UserPropsType = {
     followingInProgress: Array<number>;
     follow: (userID: number) => void;
     unfollow: (userID: number) => void;
+    isAuth: boolean;
 };
 
 export const User = React.memo(
-    ({ user, followingInProgress, follow, unfollow }: UserPropsType) => {
+    ({ user, followingInProgress, follow, unfollow, isAuth }: UserPropsType) => {
         return (
             <div>
         <span>
@@ -29,7 +30,9 @@ export const User = React.memo(
             {user.followed ? (
                 <button
                     style={{ cursor: "pointer" }}
-                    disabled={followingInProgress.some((id) => id === user.id)}
+                    disabled={
+                        !isAuth || followingInProgress.some((id) => id === user.id)
+                    }
                     onClick={() => unfollow(user.id)}
                 >
                     Unfollow
@@ -37,7 +40,9 @@ export const User = React.memo(
             ) : (
                 <button
                     style={{ cursor: "pointer" }}
-                    disabled={followingInProgress.some((id) => id === user.id)}
+                    disabled={
+                        !isAuth || followingInProgress.some((id) => id === user.id)
+                    }
                     onClick={() => follow(user.id)}
                 >
                     Follow
