@@ -1,61 +1,80 @@
-import {
-    addPost,
-    deletePost, profileInitialStateType,
-    profileReducer,
-} from "./profileReducer";
+import {RootThunkType} from "./store";
+import {profileAPI} from "../api/API";
 
-const initialState: profileInitialStateType = {
-    posts: [
-        { id: 1, postText: "none", likesCount: 1 },
-        { id: 2, postText: "some", likesCount: 2 },
-    ],
-    status: "none",
-    userProfile: {
-        userId: 1,
-        fullName: "none",
-        aboutMe: "none",
-        lookingForAJob: false,
-        lookingForAJobDescription: "none",
-        photos: { large: "none", small: "none" },
-        contacts: {
-            github: "none",
-            vk: "none",
-            facebook: "none",
-            instagram: "none",
-            twitter: "none",
-            website: "none",
-            youtube: "none",
-            mainLink: "none",
-        },
+export type ProfilePageTypes = {
+    userId: number
+    aboutMe: string
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: ContactsType
+    photos: PhotosType
+    isFetching: boolean
+}
+
+export type ContactsType = {
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
+}
+
+export type PhotosType ={
+    small: string
+    large: string
+}
+
+export type SetProfileACType = ReturnType<typeof setProfileAC>
+export type ToggleIsFetchingACType = ReturnType<typeof toggleIsFetchingAC>
+
+export type DialogsActionsRootType = SetProfileACType | ToggleIsFetchingACType
+
+const initialState: ProfilePageTypes = {
+    userId: 0,
+    aboutMe: '',
+    lookingForAJob: false,
+    lookingForAJobDescription: '',
+    fullName: '',
+    contacts: {
+        github: '',
+        vk: '',
+        facebook: '',
+        instagram: '',
+        twitter: '',
+        website: '',
+        youtube: '',
+        mainLink: ''
     },
-}; // no need of beforeEach() due to reducer immutability
+    photos: {
+        small: '',
+        large: ''
+    },
+    isFetching: false
+}
 
-test("new post should be added properly", () => {
-    const testText = "test text";
-    const updatedState = profileReducer(initialState, addPost(testText));
+function profileReducer(state: ProfilePageTypes = initialState, action: DialogsActionsRootType): ProfilePageTypes {
+    switch (action.type) {
+        case 'SET-PROFILE':
+            return action.data
+        case "TOGGLE-IS-FETCHING":
+            return {...state, isFetching: action.value}
+        default:
+            return state
+    }
+}
 
-    expect(updatedState.posts.length).toBe(initialState.posts.length + 1);
-    expect(updatedState.posts[0].id).toBe(initialState.posts.length + 1);
-    expect(updatedState.posts[0].likesCount).toBe(0);
-    expect(updatedState.posts[0].postText).toBe(testText);
-    expect(updatedState.status).toBe(initialState.status);
-    expect(updatedState.userProfile).toEqual(initialState.userProfile);
-});
+export const setProfileAC = (data: ProfilePageTypes) => { return {type: 'SET-PROFILE', data} as const }
+export const toggleIsFetchingAC = (value: boolean) => { return {type: 'TOGGLE-IS-FETCHING', value} as const }
 
-test("existing post should be deleted properly", () => {
-    const postID = 1;
-    const updatedState = profileReducer(initialState, deletePost(postID));
+export const getProfile = (userID: number): RootThunkType => async dispatch => {
+    dispatch(toggleIsFetchingAC(true))
+    const profile = await profileAPI.getProfile(+userID)
+    dispatch(setProfileAC(profile))
+    dispatch(toggleIsFetchingAC(false))
+}
 
-    expect(updatedState.posts[0].postText).toBe(initialState.posts[1].postText);
-    expect(updatedState.posts.length).toBe(initialState.posts.length - 1);
-});
-
-test("non-existing post deletion shouldn't mutate existing posts", () => {
-    const postID = 100;
-    const updatedState = profileReducer(initialState, deletePost(postID));
-
-    expect(updatedState.posts[0].likesCount).toBe(
-        initialState.posts[0].likesCount
-    );
-    expect(updatedState.posts.length).toBe(initialState.posts.length);
-});
+export default profileReducer

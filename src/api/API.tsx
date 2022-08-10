@@ -1,145 +1,78 @@
 import axios from "axios";
+import {ProfilePageTypes} from "../redux/profileReducer";
+import {UserType} from "../redux/usersReducer";
 
-export enum ResultCode {
-    Success = 0,
-    Error = 1,
-    Captcha = 10,
-}
 
-export type UserProfileType = {
-    aboutMe: string;
-    userId: number;
-    lookingForAJob: boolean;
-    lookingForAJobDescription: string;
-    fullName: string;
-    contacts: ProfileContactsType;
-    photos: PhotosType;
-};
-export type UserType = {
-    id: number;
-    name: string;
-    status: string | null;
-    followed: boolean;
-    photos: PhotosType;
-};
-type ResponseType<D = {}> = {
-    resultCode: ResultCode;
-    messages: Array<string>;
-    data: D;
-};
-type GetMeDataResponseType = {
-    id: number;
-    email: string;
-    login: string;
-};
-export type ProfileContactsType = {
-    github: string;
-    vk: string;
-    facebook: string;
-    instagram: string;
-    twitter: string;
-    website: string;
-    youtube: string;
-    mainLink: string;
-};
-export type PhotosType = {
-    small: string;
-    large: string;
-};
-type GetUsersResponseType = {
-    items: Array<UserType>;
-    totalCount: number;
-    error: string | null;
-};
 
 const instance = axios.create({
-    withCredentials: true,
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
+    withCredentials: true,
     headers: {
-        "API-KEY": "c8be0b36-3ac5-42a7-89ea-e79ef5d95007"
+        'API-KEY': 'c8be0b36-3ac5-42a7-89ea-e79ef5d95007'
     }
 })
 
+export type ResponseApiType<T> = {
+    resultCode: 1 | 0
+    messages: string[]
+    data: T
+}
+export type UserApiResponseType = {
+    error: null | string
+    items: UserType[]
+    totalCount: number
+}
+type AuthResponseDataType = {
+    id: number
+    email: string
+    login: string
+}
+type ProfileApiResponseType = ProfilePageTypes
+
+export const followAPI = {
+    follow (userID: number) {
+        return instance.post<ResponseApiType<{}>>(`follow/${userID}`, {})
+            .then(res => res.data)
+    },
+    unfollow(userID: number) {
+        return instance.delete<ResponseApiType<{}>>(`follow/${userID}`)
+            .then(res => res.data)
+    },
+}
 export const usersAPI = {
-    getUsers: (currentPage: 1, pageSize: 10) => {
-        return instance
-            .get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}`)
-            .then(promise => promise.data)
-    },
-    follow(userId: any) {
-        return instance
-            .post<ResponseType>(`follow/${userId}`)
-            .then((promise) => promise.data)
-    },
-    unfollow(userId: any) {
-        return instance
-            .delete<ResponseType>(`follow/${userId}`)
-            .then((promise) => promise.data)
-    },
-}
-
-export const profileAPI = {
-    getProfile(userId: any) {
-        return instance
-            .get<UserProfileType>(`profile/${userId}`)
-            .then((promise) => promise.data)
-    },
-    getStatus(userId: any) {
-        return instance
-            .get<string>(`profile/status/${userId}`)
-            .then((promise) => promise.data)
-    },
-    updateUserStatus(status: string) {
-        return instance
-            .put<ResponseType>(`profile/status`, {status: status})
-            .then((promise) => promise.data)
-    },
-    updatePhoto(image: File) {
-        const formData = new FormData();
-        formData.append("image", image); // creating formData object to send file to server
-
-        return instance
-            .put<ResponseType<{ photos: PhotosType }>>(`profile/photo`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+    getUsers(currentPage: number, pagesSize: number) {
+        return instance.get<UserApiResponseType>(`users?page=${currentPage}&count=${pagesSize}`)
+            .then(res => {
+                return res.data
             })
-            .then((promise) => promise.data);
     },
 }
-
 export const authAPI = {
-    me() {
-        return instance
-            .get<ResponseType<GetMeDataResponseType>>(`auth/me`)
-            .then((promise) => promise.data)
-    },
-    login(email: string, password: string, rememberMe?: boolean, captcha?: string) {
-        return instance
-            .post<ResponseType<{ userId?: number }>>(`auth/login`, {
-                email,
-                password,
-                rememberMe,
-                captcha,
+    authMe() {
+        return instance.get<ResponseApiType<AuthResponseDataType>>(`auth/me`)
+            .then(res => {
+                return res.data
             })
-            .then((promise) => promise.data)
     },
-    logout() {
-        return instance
-            .delete<ResponseType>(`auth/login`)
-            .then((promise) => promise.data)
+
+    logIn(email: string, password: string, rememberMe: boolean, captcha: boolean) {
+        return instance.post<ResponseApiType<{userId: number}>>('auth/login', {email, password, rememberMe, captcha})
+    },
+    logOut() {
+        return instance.delete<ResponseApiType<{}>>('auth/login')
     },
 }
-
-export const securityAPI = {
-    getCaptcha() {
-        return instance
-            .get<{ url: string }>(`security/get-captcha-url`)
-            .then((promise) => promise.data);
+export const profileAPI = {
+    getProfile(userID: number) {
+        return instance.get<ProfileApiResponseType>(`profile/${userID}`)
+            .then(res => {
+                return res.data
+            })
     },
-};
-
-
-
-
-
+    getStatus(userID: number) {
+        return instance.get(`profile/status/${userID}`)
+    },
+    setStatus(status: string) {
+        return instance.put('profile/status', {status})
+    }
+}

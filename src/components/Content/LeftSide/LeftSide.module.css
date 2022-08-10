@@ -1,0 +1,7 @@
+.wrapper {
+    display: flex;
+    max-width: 262px;
+    width: 100%;
+    flex-direction: column;
+    height: 398px;
+}
