@@ -18,6 +18,18 @@ import {
     getUsersSelector
 } from "../../../redux/selectors/userSelectors";
 import {AppStateTypes} from "../../../redux/store";
+import usersBackground1 from '../../../assets/images/usersPic/usersBackground1.jpg'
+import usersBackground2 from '../../../assets/images/usersPic/usersBackground2.jpg'
+import usersBackground3 from '../../../assets/images/usersPic/usersBackground3.jpg'
+import usersBackground4 from '../../../assets/images/usersPic/usersBackground4.jpg'
+import usersBackground5 from '../../../assets/images/usersPic/usersBackground5.jpg'
+import usersBackground6 from '../../../assets/images/usersPic/usersBackground6.jpg'
+import usersBackground7 from '../../../assets/images/usersPic/usersBackground7.jpg'
+import usersBackground8 from '../../../assets/images/usersPic/usersBackground8.jpg'
+import usersBackground9 from '../../../assets/images/usersPic/usersBackground9.jpg'
+import usersBackground10 from '../../../assets/images/usersPic/usersBackground10.jpg'
+import usersBackground11 from '../../../assets/images/usersPic/usersBackground11.jpg'
+import usersBackground12 from '../../../assets/images/usersPic/usersBackground12.jpg'
 
 type StateType = {
     imagesBg: Array<string>
@@ -32,7 +44,9 @@ class UsersAPI extends React.Component<UsersPropsType & ProfilePageType, StateTy
 
     constructor(props: UsersPropsType & ProfilePageType) {
         super(props);
-        this.state = {imagesBg: []}
+        this.state = {imagesBg: [usersBackground1, usersBackground2, usersBackground3, usersBackground4,
+                usersBackground5, usersBackground6, usersBackground7, usersBackground8,
+                usersBackground9, usersBackground10, usersBackground11, usersBackground12]}
     }
 
     componentDidMount() {

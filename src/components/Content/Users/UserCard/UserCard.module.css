@@ -50,10 +50,12 @@
 }
 
 .card {
-    background-color: #191f2f ;
-    border: 1px solid #475072;
+    background-color: #FFFFFF;
+    box-shadow: 1px 1px 1px 1px  #DADDE1;
+    border: #DADDE1 solid 1px;
     border-radius: 4px;
     overflow: hidden;
+
 }
 
 .infoBox {
@@ -104,14 +106,14 @@
 .name {
     font-size: 15px;
     font-weight: 500;
-    color: white;
+    color: #606770;
     text-decoration: none;
     transition: all .1s ease-in-out;
     white-space: nowrap;
 }
 
 .name:hover {
-    color: #fa6342;
+    font-weight: bold;
 }
 
 .location {
@@ -128,7 +130,7 @@
     position: absolute;
     right: 10px;
     bottom: 10px;
-    color: #fff;
+    color: #606770;
     font-size: 12px;
     font-weight: 500;
     padding: 5px 15px;
@@ -136,6 +138,7 @@
     border: 1px solid transparent;
     border-radius: 4px;
     transition: all .1s ease-in-out;
+    background-color: #AAC9FF;
 }
 
 .follow:disabled {

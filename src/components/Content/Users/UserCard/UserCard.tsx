@@ -44,12 +44,11 @@ export default function OneUserCard(props: UserType & PropsType) {
                         </div>
                         <div className={s.data}>
                             <NavLink to={`/profile/${props.id}`} className={s.name}>{props.name}</NavLink>
-                            <p className={s.location}>The Earth Planet</p>
                         </div>
                     </div>
                     {props.status
                         ? <div className={s.statusWrapper}><h5 className={s.status}>{props.status}</h5></div>
-                        : <p className={s.noStatus}>haven't said anything yet...</p>
+                        : <p className={s.noStatus}>thinking...</p>
                     }
                 </div>
             </div>

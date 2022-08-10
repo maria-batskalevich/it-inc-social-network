@@ -1,6 +1,6 @@
 .App {
-  color: white;
-  background: #ECF3FF;
+  color: #606770;
+  background: #F0F2F5;
   min-height: 100vh;
 }
 
@@ -46,7 +46,7 @@ h4::before {
   position: absolute;
   top: -5px;
   width: 3px;
-  background: #fa6342;
+  background: #1877F2;
 }
 
 h4 {
@@ -63,9 +63,10 @@ h4::before {
 
 .themeBorder {
   margin-bottom: 20px;
-  border: 1px solid #272f41;
+  border: 1px solid;
   border-radius: 6px;
-  background: #1d2333 none repeat scroll 0 0;
+  background: #FFFFFF none repeat scroll 0 0;
+  box-shadow: 1px 1px 1px 1px  #DADDE1;
   min-height: 100px;
   padding-bottom: 20px;
   padding-top: 20px;

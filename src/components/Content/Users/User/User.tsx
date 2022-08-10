@@ -15,7 +15,7 @@ type UserPropType = ProfilePageTypes & AddPropsType &
     }
 
 export default function User(props: UserPropType) {
-   const userIcon = props.userId % 3 === 0 ? userAvatar2 : userAvatar
+   const userIcon = props.userId % 4 === 0 ? userAvatar2 : userAvatar
 
     return (
         <div className={`contentCenter`}>

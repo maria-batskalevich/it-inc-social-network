@@ -26,7 +26,6 @@ export const rootReducer = combineReducers({
     postsPage: postsReducer,
     status: statusReducer,
     rightSidebar: rightSidebar,
-
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
