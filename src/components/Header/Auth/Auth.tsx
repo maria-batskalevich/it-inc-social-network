@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import userAvatar from "../../../assets/images/users/userIcon4.jpg"
+import userAvatar from "../../../assets/images/users/userIcon5.jpg"
 import s from "./Auth.module.css"
 
 type AuthPropsType = {
