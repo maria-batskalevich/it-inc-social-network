@@ -2,7 +2,7 @@
     display: flex;
     align-items: flex-start;
     text-decoration: none;
-    color: white;
+    color: #606770;
     padding: 10px 5px;
     height: 70px;
     overflow: hidden;
@@ -14,11 +14,11 @@
 }
 
 .wrapper:hover {
-    background-color: #545863;
+     background: #F0F2F5;
 }
 
 .active {
-    background-color: #616a82;
+    background: #F0F2F5;
 }
 
 .avatar {

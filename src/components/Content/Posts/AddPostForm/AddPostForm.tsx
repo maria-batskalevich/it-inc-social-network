@@ -3,6 +3,7 @@ import s from './AddPostForm.module.css'
 import {ProfileTopPropsType} from "./AddPostFormContainer";
 import {KeyboardEvent} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
+import maria2 from '../../../../assets/images/users/maria2.jpg'
 
 
 export type AddPostFormDataType = {
@@ -29,11 +30,11 @@ export function AddPostForm (props: ProfileTopPropsType){
         <form onSubmit={handleSubmit(onSubmit)} className={`${s.wrapper} themeBorder`}>
             <h3 className={s.heading}>Create Post</h3>
             <div className={s.main}>
-                <div ><img className={s.avatar} src={'https://png.pngtree.com/png-clipart/20190920/original/pngtree-happy-fox-avatar-illustration-png-image_4677278.jpg'} alt="avatar"/></div>
+                <div ><img className={s.avatar} src={maria2} alt="avatar"/></div>
                 <textarea {...register("newPost")}
                           onKeyPress={onEnterPress}
                           className={s.text}
-                          placeholder="Share some what you are thinking?"/>
+                          placeholder="Share something what you are thinking about..."/>
             </div>
             <button className={s.submit}>Post</button>
         </form>

@@ -1,5 +1,7 @@
 import React from 'react'
 import s from './Post.module.css'
+import maria2 from '../../../../../assets/images/users/maria2.jpg'
+
 
 export type PostPropsType = {
     post: string
@@ -7,14 +9,12 @@ export type PostPropsType = {
 }
 
 export function Post(props: PostPropsType) {
+
     return (
         <div className={s.wrapper}>
-            {/*<div className={s.top}>*/}
-                <div><img className={s.avatar} src={"https://png.pngtree.com/png-clipart/20190920/original/pngtree-happy-fox-avatar-illustration-png-image_4677278.jpg"} alt="avatar"/></div>
+                <div><img className={s.avatar} src={maria2} alt="avatar"/></div>
                 <p className={s.post}>{props.post}</p>
                 <span className={s.likes}>likes({props.likesCount})</span>
-            {/*</div>*/}
-
         </div>
     )
 }

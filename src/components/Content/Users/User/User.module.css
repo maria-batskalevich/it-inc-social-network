@@ -56,6 +56,8 @@
     width: 30%;
     margin-left: 30px;
     margin-right: 30px;
+    box-shadow: 1px 1px 1px 1px  #DADDE1;
+    border: #DADDE1 solid 1px;
 }
 
 .about {

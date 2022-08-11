@@ -8,7 +8,7 @@ export function MyPosts(props: MyPostsPropsType) {
         <div className={`themeBorderPad themeBorder`}>
             <h3 className={s.heading}>My Posts</h3>
             {
-                props.posts.map( p => <Post key={p.id} post={p.post} likesCount={p.likes} /> )
+                props.posts.map( p => <Post key={p.id} post={p.post} likesCount={p.likes}/> )
             }
         </div>
     )

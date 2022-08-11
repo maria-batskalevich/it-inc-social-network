@@ -7,7 +7,6 @@ import {Preloader} from "./components/common/Preloader/Preloader";
 import {AppStateTypes} from "./redux/store";
 import {Content} from "./components/Content/Content";
 import {Navbar} from "./components/Navbar/Navbar";
-import {OnlineFriends} from "./components/OnlineFriends/OnlineFriends";
 
 function App() {
     const isInitialized = useSelector<AppStateTypes, boolean>(state => state.auth.isInitialized)
@@ -24,7 +23,6 @@ function App() {
             <Header/>
             <Navbar/>
             <Content />
-            <OnlineFriends />
         </div>
     );
 }

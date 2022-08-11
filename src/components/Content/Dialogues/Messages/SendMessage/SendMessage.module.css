@@ -31,7 +31,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #616a82;
+    background-color: #1A6ED8;
+    border: 1px solid #1A6ED8;
     cursor: pointer;
 }
 

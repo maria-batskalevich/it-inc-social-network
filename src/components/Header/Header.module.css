@@ -1,5 +1,5 @@
 .header {
-    background: #21283b none repeat scroll 0 0;
+    background: #1A6ED8 none repeat scroll 0 0;
     height: 60px;
     padding: 0 70px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, .2);
@@ -9,6 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color: white;
 }
 
 .logoName {

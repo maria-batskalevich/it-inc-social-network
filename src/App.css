@@ -25,7 +25,6 @@ svg path {
 
 h3,
 h4 {
-  border-bottom: 1px solid #272f41;
   display: block;
   font-weight: 500;
   font-size: 15px;
@@ -47,6 +46,7 @@ h4::before {
   top: -5px;
   width: 3px;
   background: #1877F2;
+  color: #606770;
 }
 
 h4 {
@@ -63,7 +63,6 @@ h4::before {
 
 .themeBorder {
   margin-bottom: 20px;
-  border: 1px solid;
   border-radius: 6px;
   background: #FFFFFF none repeat scroll 0 0;
   box-shadow: 1px 1px 1px 1px  #DADDE1;

@@ -5,7 +5,6 @@
 
 .main {
     display: flex;
-
 }
 
 .avatar {
@@ -17,9 +16,8 @@
 }
 
 .text {
-    background: #282e3e;
-    border: 1px solid #182130;
-    color: #fff;
+    background: #E4E6EB;
+    box-shadow: 1px 1px 1px 1px #dadde1;
     border-radius: 6px 6px 0 0;
     flex-grow: 1;
     margin-left: 5px;
@@ -29,7 +27,7 @@
 }
 
 .submit {
-    background-color: #616a82;
+    background-color: #1A6ED8;
     border: medium none;
     color: #fff;
     font-weight: 500;
@@ -42,6 +40,9 @@
     cursor: pointer;
 }
 
-.submit:hover {
-    background: #fa6342;
+.heading {
+   color: #606770;
+}
+textarea{
+ outline: none
 }
