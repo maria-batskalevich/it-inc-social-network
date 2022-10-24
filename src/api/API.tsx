@@ -8,7 +8,7 @@ const instance = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
     withCredentials: true,
     headers: {
-        'API-KEY': 'c8be0b36-3ac5-42a7-89ea-e79ef5d95007'
+        'API-KEY': '875e5d3c-d106-4de6-a4d1-29564b65ae2b'
            }
 })
 

@@ -16,13 +16,7 @@ export type profileActions = newPostTextActionType | addPostActionType
 
 const initialState = {
     posts: [
-        {id: v1(), likes: 8, post: 'This is my first post'},
-        {
-            id: v1(),
-            likes: 3,
-            post: 'I think this post should be longer than others and it not necessary to be interesting and be right.'
-        },
-        {id: v1(), likes: 17, post: 'The truth is... I am Iron Man!'}
+        {id: v1(), likes: 1, post: 'This is my first post'},
     ],
 }
 
