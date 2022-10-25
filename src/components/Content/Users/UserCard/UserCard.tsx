@@ -1,5 +1,5 @@
 import React from 'react'
-import s from './UserCard.module.css'
+import s from './UserCard.module.scss'
 import userAvatar from '../../../../assets/images/users/userAvatar.png'
 import userAvatar2 from '../../../../assets/images/users/userAvatar2.png'
 import {NavLink} from 'react-router-dom';
