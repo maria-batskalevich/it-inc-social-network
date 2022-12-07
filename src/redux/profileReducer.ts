@@ -1,5 +1,6 @@
 import {RootThunkType} from "./store";
 import {profileAPI} from "../api/API";
+import myAvatar from '../assets/images/users/myAvatarLarge.jpg'
 
 export type ProfilePageTypes = {
     userId: number
@@ -30,8 +31,9 @@ export type PhotosType ={
 
 export type SetProfileACType = ReturnType<typeof setProfileAC>
 export type ToggleIsFetchingACType = ReturnType<typeof toggleIsFetchingAC>
+export type savePhotoSuccessACType = ReturnType<typeof savePhotoSuccess>
 
-export type DialogsActionsRootType = SetProfileACType | ToggleIsFetchingACType
+export type DialogsActionsRootType = SetProfileACType | ToggleIsFetchingACType | savePhotoSuccessACType
 
 const initialState: ProfilePageTypes = {
     userId: 0,
@@ -50,8 +52,8 @@ const initialState: ProfilePageTypes = {
         mainLink: ''
     },
     photos: {
-        small: '',
-        large: ''
+        small: myAvatar,
+        large: myAvatar
     },
     isFetching: false
 }
@@ -62,6 +64,8 @@ function profileReducer(state: ProfilePageTypes = initialState, action: DialogsA
             return action.data
         case "TOGGLE-IS-FETCHING":
             return {...state, isFetching: action.value}
+        case "SAVE-PHOTO-SUCCESS":
+            return {...state, photos: action.photos}
         default:
             return state
     }
@@ -69,12 +73,20 @@ function profileReducer(state: ProfilePageTypes = initialState, action: DialogsA
 
 export const setProfileAC = (data: ProfilePageTypes) => { return {type: 'SET-PROFILE', data} as const }
 export const toggleIsFetchingAC = (value: boolean) => { return {type: 'TOGGLE-IS-FETCHING', value} as const }
+export const savePhotoSuccess = (photos: any) => ({type: 'SAVE-PHOTO-SUCCESS', photos} as const)
 
 export const getProfile = (userID: number): RootThunkType => async dispatch => {
     dispatch(toggleIsFetchingAC(true))
     const profile = await profileAPI.getProfile(+userID)
     dispatch(setProfileAC(profile))
     dispatch(toggleIsFetchingAC(false))
+}
+export const savePhoto = (file: any): RootThunkType => async dispatch => {
+    debugger
+    const res = await profileAPI.setPhoto(file)
+    if (res.status === 200) {
+        dispatch(savePhotoSuccess(res.data.photos))
+    }
 }
 
 export default profileReducer

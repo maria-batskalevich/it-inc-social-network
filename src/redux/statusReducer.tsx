@@ -31,4 +31,5 @@ export const setNewStatus = (status: string): RootThunkType => async dispatch =>
     }
 }
 
+
 export default statusReducer

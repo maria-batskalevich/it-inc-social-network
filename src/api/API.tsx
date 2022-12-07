@@ -2,8 +2,6 @@ import axios from "axios";
 import {ProfilePageTypes} from "../redux/profileReducer";
 import {UserType} from "../redux/usersReducer";
 
-
-
 const instance = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
     withCredentials: true,
@@ -74,5 +72,15 @@ export const profileAPI = {
     },
     setStatus(status: string) {
         return instance.put('profile/status', {status})
+    },
+    setPhoto(photoFile:string) {
+        const formData = new FormData()
+        formData.append('image', photoFile)
+        return instance.put('profile/photo/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        } )
+
     }
 }

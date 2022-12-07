@@ -5,7 +5,7 @@ import {AppStateTypes} from "../../../../redux/store";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import {getStatus, setNewStatus} from "../../../../redux/statusReducer";
-import {getProfile, ProfilePageTypes} from "../../../../redux/profileReducer";
+import {getProfile, ProfilePageTypes, savePhoto} from "../../../../redux/profileReducer";
 
 type PathParamsType = {
     userID: string,
@@ -14,6 +14,8 @@ type PathParamsType = {
 export type AddPropsType = {
     idMe: number
     status: string
+    isOwner: boolean
+    savePhoto: any
 }
 
 export type PropsType = RouteComponentProps<PathParamsType> & ProfilePageTypes & MDTPType & AddPropsType
@@ -34,7 +36,10 @@ export class UserAPI extends React.Component<PropsType, {}> {
     }
 
     render() {
-        return <User {...this.props} />
+        return <User {...this.props}
+                     isOwner={!this.props.match.params.userID}
+                     savePhoto={this.props.savePhoto}
+        />
     }
 }
 
@@ -46,6 +51,8 @@ export type MDTPType = {
 
 const mapStateToProps = (state: AppStateTypes): ProfilePageTypes & AddPropsType => {
     return {
+        savePhoto: state.profilePage.photos,
+        isOwner: false,
         userId: state.profilePage.userId,
         aboutMe: state.profilePage.aboutMe,
         lookingForAJob: state.profilePage.lookingForAJob,
@@ -67,11 +74,11 @@ const mapStateToProps = (state: AppStateTypes): ProfilePageTypes & AddPropsType 
         },
         isFetching: state.profilePage.isFetching,
         status: state.status.status,
-        idMe: state.auth.id,
+        idMe: state.auth.id
     }
 }
 
 export default compose<React.ComponentType>(
     withRouter,
-    connect(mapStateToProps, {getProfile, getStatus, setNewStatus}),
+    connect(mapStateToProps, {getProfile, getStatus, setNewStatus, savePhoto}),
 )(UserAPI)

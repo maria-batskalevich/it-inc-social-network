@@ -8,15 +8,20 @@ import ProfileStatus from "./ProfileStatus";
 import {Preloader} from "../../../common/Preloader/Preloader";
 import {ProfilePageTypes} from "../../../../redux/profileReducer";
 
-
 type UserPropType = ProfilePageTypes & AddPropsType &
     {
         setNewStatus: (status: string) => void
+        savePhoto: (e: any) => void
     }
 
 export default function User(props: UserPropType) {
-   const userIcon = props.userId % 4 === 0 ? userAvatar2 : userAvatar
+    const userIcon = props.userId % 4 === 0 ? userAvatar2 : userAvatar
 
+    const onMainPhotoSelected = (e: any) => {
+        if (e.target.file.length) {
+            props.savePhoto(e.target.file[0])
+        }
+    }
     return (
         <div className={`contentCenter`}>
             <div className={`themeBorder themeBorderPad ${s.wrapper}`}>
@@ -30,7 +35,7 @@ export default function User(props: UserPropType) {
                             <h4 className={s.boxHeading}>General Info</h4>
                             <p className={s.descWrapper}>
                                 <span className={s.desc}>Looking for a job: </span>
-                                <span className={s.descRes}>{'Yes I am' }</span>
+                                <span className={s.descRes}>{'Yes I am'}</span>
                             </p>
                             <p className={s.descWrapper}>
                                 <span className={s.desc}>Description: </span>
@@ -45,6 +50,7 @@ export default function User(props: UserPropType) {
                             <img src={props.photos.small ? props.photos.small : userIcon} className={s.userImage}
                                  alt={`user name`}/>
                         </div>
+                        {props.isOwner && <input type="file" onChange={onMainPhotoSelected}/>}
                         <div className={`themeBorder ${s.infoBox}`}>
                             <h4 className={s.boxHeading}>Contacts & Socials</h4>
                             <p className={s.descWrapper}>
@@ -116,7 +122,7 @@ export default function User(props: UserPropType) {
                     }
                     {
                         props.userId === props.idMe &&
-                        <ProfileStatus status={props.status} setNewStatus={props.setNewStatus} />
+                        <ProfileStatus status={props.status} setNewStatus={props.setNewStatus}/>
                     }
 
                 </div>

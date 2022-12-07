@@ -41,7 +41,10 @@ export const Login = () => {
 
     return (
         <div className={s.wrapper + ' themeBorder themeBorderPad'}>
-            <h3>Please Log In</h3>
+            <h2>Sign In</h2>
+            <div className={s.span}>
+                <span>Username: free@samuraijs.com <br/> Password: free</span>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
                 <p className={s.inputWrapper}>
                     <label className={s.label}>
